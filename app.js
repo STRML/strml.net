@@ -37,7 +37,7 @@ function doWork(){
     .then(writeTo(workEl, workText, 0, speed, false, 1))
     .then(writeTo(styleEl, styleText[1], 0, speed, true, 1))
     .then(setWorkListener)
-    .delay(500)
+    .delay(1000)
     .then(writeTo(styleEl, styleText[2], 0, speed, true, 1))
     .then(writeTo(pgpEl, pgpText, 0, speed, false, 16))
     .then(writeTo(styleEl, styleText[3], 0, speed, true, 1));
@@ -157,7 +157,7 @@ function setWorkListener() {
       setTimeout(function() {
         workEl.scrollTop = flipped ? 0 : 9999;
         flipping = false;
-      }, 250);
+      }, 500);
     }
 
     // Scroll. If we've flipped, flip the scroll direction.
