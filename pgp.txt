@@ -1,6 +1,4 @@
 -----BEGIN PGP PUBLIC KEY BLOCK-----
-Comment: GPGTools - https://gpgtools.org
-
 mQINBFOkddMBEACk66XM21RIKNRkxU2OzpB3ws1Ut3VtVNnp+KuQoH5Xx01nPwq0
 NGgc0/qaicjII4+EJ/TfiHz2rFtfhq7lTtV3x0ok5XMF3MhWsG8QqSXovl9kn1n6
 6PFyLU4wTLyen569oWtfQltxxb57SjwDO96LupELgwujDxTAhlWC2dfAnzwkZlQk
@@ -64,8 +62,6 @@ zG+u1dywE7V/nZ0+wDRt7LiVPLyZDgSLAQIdsQYoiEDfPve6zXdDhjbIem327A==
 -----END PGP PUBLIC KEY BLOCK-----
 
 -----BEGIN PGP PUBLIC KEY BLOCK-----
-Comment: GPGTools - https://gpgtools.org
-
 mQINBFOtfRkBEAC75DF9Nbn5y7YlGPrHSXxP3O2lAhSKnMd9k7m/0gXqlb3050zD
 AWFJyb+CxYaDF2fkts3cEtC1DgmaEcahpexx6ngTLSjbEqSy8mzeoiX2l4qzj2VZ
 tM6D3DbPJme2bsmU0ySRF/bCfyQPOCn1JQ0dCpVL/VkGT/ZilIwUxYixFOGgcRv9

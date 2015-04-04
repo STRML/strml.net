@@ -1,0 +1,41 @@
+
+/**
+ * That markdown on the left doesn't look great. Let's render it.
+ */
+
+#work-text {
+  transition: all 0.5s;
+}
+
+#work-text.flipped {
+  -webkit-transform: rotateX(0deg) rotateY(190deg) rotateZ(180deg);
+}
+
+#work-text .md {
+  -webkit-transform: rotateY(190deg) rotateZ(180deg);
+  margin-top: 1000px;
+  font-family: sans-serif;
+}
+
+#work-text .md h1,h2,h3,h4,h5,h6 {
+  color: #ddd;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  display: inline-block;
+}
+
+#work-text .md li {
+  margin: 5px 0;
+}
+
+#work-text .md h1,h2,h3,h4,h5,h6,ul,p {
+  margin: 0px;
+}
+
+/**
+ * Alright. We're ready.
+ *
+ * 3...
+ * 2...
+ * 1...
+ */

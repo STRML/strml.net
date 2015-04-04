@@ -1,4 +1,4 @@
-/*
+/**
  *
  * Hey. My name's Samuel Reed. I'm CTO of BitMEX.com and an occasional
  * freelance contractor.
@@ -16,7 +16,7 @@
   -webkit-transition: all 1s;
 }
 
-/*
+/**
  * That didn't do much. But you'll see.
  *
  * Let's keep going. Black on white is really boring,
@@ -24,11 +24,11 @@
  */
 
 html {
-  background: rgb(73, 92, 109);
+  background: rgb(63, 82, 99);
   height: 100%;
 }
 
-/**
+/***
  * Whoa! I can't see anything! Hold on...
  */
 
@@ -36,7 +36,7 @@ pre, a {
   color: white;
 }
 
-/*
+/**
  * That's better. Sorry about your eyes. Moving on...
  *
  * Working in this big empty space is tough.
@@ -45,8 +45,8 @@ pre, a {
  */
 
 body {
-  height: 100%;
   overflow: hidden;
+  height: 100%;
 }
 
 pre:not(:empty) {
@@ -54,16 +54,16 @@ pre:not(:empty) {
   background: rgb(48, 48, 48);
   border: 1px solid #ccc;
   max-height: 100%; max-height: 44.8%;
-  width: 100%; width: 49.5%;
-  font-size: 13px;
-  font-family: Courier;
+  width: 100%; width: 49%;
+  font-size: 14px;
+  font-family: monospace;
   padding: 10px 10px 20px;
   box-shadow: -4px 4px 2px 0 rgba(0,0,0,0.3);
   white-space: pre-wrap;
   outline: 0;
 }
 
-/*
+/**
  * Okay. We're going to start filling up the screen.
  * Let's get ready to do some work.
  */
@@ -73,7 +73,7 @@ pre:not(:empty) {
   position: absolute;
 }
 
-/*
+/**
  * This is good, but all the text is white!
  * Let's make it even more readable.
  */
@@ -85,7 +85,7 @@ pre:not(:empty) {
 .value         { color: #BE84F2; }
 .value.px      { color: #F92772; }
 
-/*
+/**
  * Alright, now we're getting somewhere.
  * Time to get a little perspective.
  */
@@ -99,25 +99,16 @@ pre {
 }
 
 #style-text {
-  -webkit-transform: translateX(99.5%) translateY(-2%) rotateY(-10deg);
+  -webkit-transform: translateX(98.5%) translateY(-1.5%) rotateY(-10deg);
   -webkit-transform-origin: right;
-  max-height: 94%;
+  max-height: 94.5%;
 }
 
-/*
+/**
  * So, let's talk projects.
- * By the way, you can edit this box. Try adding new CSS!
  */
 
- pre:not(#style-text) {
-   -webkit-transform: rotateY(10deg);
-   -webkit-transform-origin: left;
- }
-
- /*
-  * Before we move to the next step, why not add a fancy background?
-  */
-
- html {
-   background: radial-gradient(ellipse farthest-corner at 10% 10%, rgba(102, 105, 104, 0.9), rgba(93, 112, 119, 0.89), rgba(160, 174, 150, 0.9)),url("/img/bgnoise_lg_dark.png");
- }
+pre:not(#style-text) {
+  -webkit-transform: rotateY(10deg);
+  -webkit-transform-origin: left;
+}
