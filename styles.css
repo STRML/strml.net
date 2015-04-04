@@ -99,9 +99,9 @@ pre {
 }
 
 #style-text {
-  -webkit-transform: translateX(99.5%) translateY(-2.8%) rotateY(-10deg);
-  -webkit-transform-origin: 1000px;
-  max-height: 97%;
+  -webkit-transform: translateX(99.5%) translateY(-2%) rotateY(-10deg);
+  -webkit-transform-origin: right;
+  max-height: 94%;
 }
 
 /*
@@ -111,7 +111,7 @@ pre {
 
  pre:not(#style-text) {
    -webkit-transform: rotateY(10deg);
-   -webkit-transform-origin: 0px;
+   -webkit-transform-origin: left;
  }
 
  /*
