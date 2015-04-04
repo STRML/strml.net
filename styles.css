@@ -1,0 +1,119 @@
+/*
+ *
+ * Hey. My name's Samuel Reed. I'm CTO of BitMEX.com and an occasional
+ * freelance contractor.
+ *
+ * I build interactive websites.
+ *
+ * How about some live coding?
+ */
+
+/**
+ * Let's begin. We start by animating... well, everything.
+ */
+
+* {
+  -webkit-transition: all 1s;
+}
+
+/*
+ * That didn't do much. But you'll see.
+ *
+ * Black on white is really boring. Let's fix that.
+ */
+
+html {
+  background: rgb(73, 92, 109);
+  height: 100%;
+}
+
+/**
+ * Whoa! I can't see anything! Hold on...
+ */
+
+pre {
+  color: white;
+}
+
+/*
+ * Working in this big empty space is tough.
+ * I'm going to make a nice area for us to work in.
+ */
+
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+pre:not(:empty) {
+  overflow: auto;
+  background: rgb(48, 48, 48);
+  border: 1px solid #ccc;
+  max-height: 100%; max-height: 44.8%;
+  width: 100%; width: 49.5%;
+  font-size: 13px;
+  font-family: Courier;
+  padding: 10px 10px 20px;
+  box-shadow: -4px 4px 2px 0 rgba(0,0,0,0.3);
+  white-space: pre-wrap;
+  outline: 0;
+}
+
+/*
+ * Okay. We're going to start filling up the screen.
+ * Let's get ready to do some work.
+ */
+
+#style-text {
+  -webkit-transform: translateX(95%);
+  position: absolute;
+}
+
+/*
+ * This is good, but all the text is white!
+ * Let's make it even more readable.
+ */
+
+.comment       { color: #857F6B; font-style: italic; }
+.selector      { color: #E69F0F; }
+.selector .key { color: #64D5EA; }
+.key           { color: #64D5EA; }
+.value         { color: #BE84F2; }
+.value.px      { color: #F92772; }
+
+/*
+ * Alright, now we're getting somewhere.
+ * Time to get a little perspective.
+ */
+
+body {
+  -webkit-perspective: 1000px;
+}
+
+pre {
+  border-radius: 1px; /* Prevents bad clipping in Chrome */
+}
+
+#style-text {
+  -webkit-transform: translateX(99.5%) translateY(-2.8%) rotateY(-10deg);
+  -webkit-transform-origin: 1000px;
+  max-height: 97%;
+}
+
+/*
+ * So, let's talk projects.
+ * By the way, you can edit this box. Try adding new CSS!
+ */
+
+ pre:not(#style-text) {
+   -webkit-transform: rotateY(10deg);
+   -webkit-transform-origin: 0px;
+ }
+
+ /*
+  * Before we move to the next step, why not add a fancy background?
+  */
+
+ html {
+   background: radial-gradient(ellipse farthest-corner at 10% 10%, rgba(102, 105, 104, 0.9), rgba(93, 112, 119, 0.89), rgba(160, 174, 150, 0.9)),url("/img/bgnoise_lg_dark.png");
+ }

@@ -1,0 +1,39 @@
+STRML.net
+=========
+
+Samuel Reed
+Frontend / NodeJS Developer
+
+Contact
+-------
+
+* STRML on irc.freenode.net
+* sam at bitmex d𝚘t com
+* samuel.trace.reed at gmail d𝚘t com
+
+Projects
+--------
+
+* BitMEX.com
+* Securesha.re
+* Tixelated.com
+* BrightestYoungThings.com
+
+Open Source
+-----------
+
+* OpenBazaar
+* JSXHint
+* react-grid-layout
+* react-localstorage
+* react-router-component
+* textFit
+* backbone.queryRouter
+* backbone.layoutManager
+* mongoose-filter-denormalize
+* Healthcare.gov-Marketplace
+
+Collaboration
+-------------
+
+Email me if you want to work together.
