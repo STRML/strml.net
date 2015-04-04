@@ -14,10 +14,10 @@ Contact
 Projects
 --------
 
-* BitMEX.com
-* Securesha.re
-* Tixelated.com
-* BrightestYoungThings.com
+* www.BitMEX.com
+* www.Securesha.re
+* www.Tixelated.com
+* www.BrightestYoungThings.com
 
 Open Source
 -----------

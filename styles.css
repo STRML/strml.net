@@ -19,7 +19,8 @@
 /*
  * That didn't do much. But you'll see.
  *
- * Black on white is really boring. Let's fix that.
+ * Let's keep going. Black on white is really boring,
+ * so let's do something about it.
  */
 
 html {
@@ -31,12 +32,15 @@ html {
  * Whoa! I can't see anything! Hold on...
  */
 
-pre {
+pre, a {
   color: white;
 }
 
 /*
+ * That's better. Sorry about your eyes. Moving on...
+ *
  * Working in this big empty space is tough.
+ *
  * I'm going to make a nice area for us to work in.
  */
 

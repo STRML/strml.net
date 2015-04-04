@@ -4,12 +4,12 @@ var dataText = require('raw!./data.txt');
 var pgpText = require('raw!./pgp.txt');
 var styleText = require('raw!./styles.css');
 var prefix = require('./lib/getPrefix')();
+var replaceURLs = require('./lib/replaceURLs');
 styleText = styleText.replace(/-webkit-/g, prefix);
 
 document.addEventListener("DOMContentLoaded", doWork);
 
-var openComment = false;
-var isDev = window.location.hostname === 'localhost' && false;
+var isDev = window.location.hostname === 'localhost';
 var speed = isDev ? 4 : 16;
 var style, styleEl, dataEl, pgpEl;
 
@@ -19,7 +19,10 @@ function doWork(){
   dataEl = document.getElementById('data-text');
   pgpEl = document.getElementById('pgp-text');
 
-  styleEl.addEventListener('input', onStyleElChange);
+  // Mirror user edits back to the style element.
+  styleEl.addEventListener('input', function() {
+    style.textContent = styleEl.textContent;
+  });
 
   // starting it off
   writeTo(styleEl, styleText, 0, speed, true, 1, function() {
@@ -29,6 +32,7 @@ function doWork(){
   });
 }
 
+var openComment = false;
 var styleBuffer = '';
 function writeChar(el, char){
   var fullText = el.innerHTML;
@@ -63,6 +67,12 @@ function writeChar(el, char){
 
 function writeSimpleChar(el, char) {
   el.innerHTML += char;
+  if (char === '\n') {
+    var tryURLs = replaceURLs(el.innerHTML);
+    if (tryURLs !== el.innerHTML) {
+      el.innerHTML = tryURLs;
+    }
+  }
 }
 
 var endOfSentence = /[\.\?\!]\s$/;
@@ -73,7 +83,11 @@ function writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval, 
     // Write a character or multiple characters to the buffer.
     var chars = message.slice(index, index + charsPerInterval);
     index += charsPerInterval;
+
+    // Ensure we stay scrolled to the bottom.
     el.scrollTop = el.scrollHeight;
+
+    // If this is going to <style> it's more complex; otherwise, just write.
     if (mirrorToStyle) {
       writeChar(el, chars);
     } else {
@@ -94,8 +108,4 @@ function writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval, 
   } else {
     callback && callback();
   }
-}
-
-function onStyleElChange(e) {
-  style.textContent = styleEl.textContent;
 }
