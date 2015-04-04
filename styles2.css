@@ -1,5 +1,28 @@
 
 /**
+ * The text doesn't look so hot. Let's fix that.
+ */
+
+#work-text .md {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+
+#work-text .md h1,h2,h3,h4,h5,h6 {
+  color: #ddd;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  display: inline-block;
+}
+
+#work-text .md li {
+  margin: 5px 0;
+}
+
+#work-text .md h1,h2,h3,h4,h5,h6,ul,p {
+  margin: 0px;
+}
+
+/**
  * If you want to contact me, use the PGP keys on the left.
  *
  * You know, if you're into that sort of thing.

@@ -18,7 +18,7 @@ styleText = styleText.map(function(text) {
 document.addEventListener("DOMContentLoaded", doWork);
 
 // Vars that will help us get er done
-var isDev = window.location.hostname === 'localhost' && false;
+var isDev = window.location.hostname === 'localhost';
 var speed = isDev ? 0 : 16;
 var style, styleEl, workEl, pgpEl;
 function doWork(){
@@ -32,7 +32,7 @@ function doWork(){
     style.textContent = styleEl.textContent;
   });
 
-  if (!isDev) {
+  if (!isDev || true) {
     writeTo(styleEl, styleText[0], 0, speed, true, 1)()
     .then(writeTo(workEl, workText, 0, speed, false, 1))
     .then(writeTo(styleEl, styleText[1], 0, speed, true, 1))

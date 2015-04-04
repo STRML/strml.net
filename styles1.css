@@ -17,21 +17,6 @@
   font-family: sans-serif;
 }
 
-#work-text .md h1,h2,h3,h4,h5,h6 {
-  color: #ddd;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 5px;
-  display: inline-block;
-}
-
-#work-text .md li {
-  margin: 5px 0;
-}
-
-#work-text .md h1,h2,h3,h4,h5,h6,ul,p {
-  margin: 0px;
-}
-
 /**
  * Alright. We're ready.
  *
