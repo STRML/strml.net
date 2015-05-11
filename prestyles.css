@@ -1,0 +1,40 @@
+/* I'm cheating a bit */
+
+html, body {
+  margin-top: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+pre {
+  overflow: auto;
+  max-height: 90%;
+  width: 100%;
+  border-radius: 1px; /* Prevents bad clipping in Chrome */
+}
+
+#content {
+  position: absolute;
+  top: 0; right: 0; left: 0; bottom: 20px;
+}
+
+#header {
+  position: absolute;
+  bottom: 0;
+  height: 20px;
+  left: 0;
+  right: 0;
+  padding: 0 10px;
+}
+
+a:after {
+  content: '';
+  padding-right: 5px;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-color: inherit;
+}
+
+a:last-of-type:after {
+  border: none;
+}

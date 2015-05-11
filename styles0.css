@@ -25,7 +25,6 @@
 
 html {
   background: rgb(63, 82, 99);
-  height: 100%;
 }
 
 /***
@@ -44,17 +43,12 @@ pre, a {
  * I'm going to make a nice area for us to work in.
  */
 
-body {
-  overflow: hidden;
-  height: 100%;
-}
-
 pre:not(:empty) {
   overflow: auto;
   background: rgb(48, 48, 48);
   border: 1px solid #ccc;
-  max-height: 100%; max-height: 44.8%;
-  width: 100%; width: 49%;
+  max-height: 44.6%;
+  width: 49%;
   font-size: 14px;
   font-family: monospace;
   padding: 10px 10px 20px;
@@ -94,12 +88,8 @@ body {
   -webkit-perspective: 1000px;
 }
 
-pre {
-  border-radius: 1px; /* Prevents bad clipping in Chrome */
-}
-
 #style-text {
-  -webkit-transform: translateX(98.5%) translateY(-1.5%) rotateY(-10deg);
+  -webkit-transform: translateX(98.5%) rotateY(-10deg);
   -webkit-transform-origin: right;
   max-height: 94.5%;
 }

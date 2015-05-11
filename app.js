@@ -5,14 +5,17 @@ var Promise = require('bluebird');
 var md = require('markdown').markdown.toHTML;
 var workText = require('raw!./work.txt');
 var pgpText = require('raw!./pgp.txt');
+var headerHTML = require('raw!./header.html');
 var styleText = [0,1,2,3].map(function(i) { return require('raw!./styles' + i + '.css'); });
+var preStyles = require('raw!./prestyles.css');
 var replaceURLs = require('./lib/replaceURLs');
 
 // Ghetto per-browser prefixing
-var prefix = require('./lib/getPrefix')();
+var browserPrefix = require('./lib/getPrefix')();
 styleText = styleText.map(function(text) {
-  return text.replace(/-webkit-/g, prefix);
+  return text.replace(/-webkit-/g, browserPrefix);
 });
+
 
 // Wait for load to get started.
 document.addEventListener("DOMContentLoaded", doWork);
@@ -20,16 +23,34 @@ document.addEventListener("DOMContentLoaded", doWork);
 // Vars that will help us get er done
 var isDev = window.location.hostname === 'localhost';
 var speed = isDev ? 0 : 16;
-var style, styleEl, workEl, pgpEl;
+var style, styleEl, workEl, pgpEl, skipAnimationEl;
+var animationSkipped = false, done = false;
 function doWork(){
+  // We're cheating a bit on styles.
+  var preStyleEl = document.createElement('style');
+  preStyleEl.textContent = preStyles;
+  document.head.insertBefore(preStyleEl, document.getElementsByTagName('style')[0]);
+
+  // Populate header.
+  var header = document.getElementById('header');
+  header.innerHTML = headerHTML;
+
+  // El refs
   style = document.getElementById('style-tag');
   styleEl = document.getElementById('style-text');
   workEl = document.getElementById('work-text');
   pgpEl = document.getElementById('pgp-text');
+  skipAnimationEl = document.getElementById('skip-animation');
 
   // Mirror user edits back to the style element.
   styleEl.addEventListener('input', function() {
     style.textContent = styleEl.textContent;
+  });
+
+  // Skip anim on click to skipAnimation
+  skipAnimationEl.addEventListener('click', function(e) {
+    e.preventDefault();
+    animationSkipped = true;
   });
 
   if (!isDev || true) {
@@ -40,16 +61,42 @@ function doWork(){
     .delay(1000)
     .then(writeTo(styleEl, styleText[2], 0, speed, true, 1))
     .then(writeTo(pgpEl, pgpText, 0, speed, false, 16))
-    .then(writeTo(styleEl, styleText[3], 0, speed, true, 1));
-  } else {
-    styleText.forEach(function(text) {
-      styleEl.innerHTML += text;
-      style.textContent += text;
+    .then(writeTo(styleEl, styleText[3], 0, speed, true, 1))
+    .catch(function(e) {
+      if (e.message === "SKIP IT") {
+        getSomeoneElseToDoTheWork();
+      }
     });
-    setWorkListener();
-    pgpEl.innerHTML = pgpText;
+  } else {
+    getSomeoneElseToDoTheWork();
   }
 }
+
+// Skips all the animations.
+function getSomeoneElseToDoTheWork() {
+  if (done) return;
+  done = true;
+  pgpEl.innerHTML = pgpText;
+  var txt = styleText.join('\n');
+
+  // The work-text animations are rough
+  style.textContent = "#work-text * { " + browserPrefix + "transition: none; }";
+  style.textContent += txt;
+  var styleHTML = "";
+  for(var i = 0; i < txt.length; i++) {
+     styleHTML = handleChar(styleHTML, txt[i]);
+  }
+  styleEl.innerHTML = styleHTML;
+  setWorkListener();
+
+  // There's a bit of a scroll problem with this thing
+  var start = Date.now();
+  var interval = setInterval(function() {
+    workEl.scrollTop = Infinity;
+    if (Date.now() - 1000 > start) clearInterval(interval);
+  }, 0);
+}
+
 
 /**
  * Helpers
@@ -61,8 +108,25 @@ function doWork(){
 
 var openComment = false;
 var styleBuffer = '';
-function writeChar(el, char){
-  var fullText = el.innerHTML;
+var fullTextStorage = {};
+function writeChar(el, char, buffer){
+  // Grab text. We buffer it in storage so we don't have to read from the DOM every iteration.
+  var fullText = fullTextStorage[el.id];
+  if (!fullText) fullText = fullTextStorage[el.id] = el.innerHTML;
+
+  fullText = handleChar(fullText, char);
+  // But we still write to the DOM every iteration, which can be pretty slow.
+  el.innerHTML = fullTextStorage[el.id] = fullText;
+
+  // Buffer writes to the <style> element so we don't have to paint quite so much.
+  styleBuffer += char;
+  if (char === ';') {
+    style.textContent += styleBuffer;
+    styleBuffer = '';
+  }
+}
+
+function handleChar(fullText, char) {
   if (char === '/' && openComment === false) {
     openComment = true;
     fullText += char;
@@ -82,14 +146,7 @@ function writeChar(el, char){
   } else {
     fullText += char;
   }
-  el.innerHTML = fullText;
-
-  // Buffer writes to the <style> element so we don't have to paint quite so much.
-  styleBuffer += char;
-  if (char === ';') {
-    style.textContent += styleBuffer;
-    styleBuffer = '';
-  }
+  return fullText;
 }
 
 function writeSimpleChar(el, char) {
@@ -101,6 +158,10 @@ var endOfBlock = /[^\/]\n\n$/;
 function writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval){
   return function() {
     return Promise.try(function() {
+      if (animationSkipped) {
+        // Lol who needs proper flow control
+        throw new Error('SKIP IT');
+      }
       // Write a character or multiple characters to the buffer.
       var chars = message.slice(index, index + charsPerInterval);
       index += charsPerInterval;
@@ -136,6 +197,7 @@ function writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval){
 // Fire a listener when scrolling the 'work' box.
 //
 function setWorkListener() {
+  if (workEl.classList.contains('flipped')) return;
   workEl.innerHTML = '<div class="text">' + replaceURLs(workText) + '</div>' +
                      '<div class="md">' + replaceURLs(md(workText)) + '<div>';
 
