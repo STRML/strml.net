@@ -24,14 +24,15 @@ Open Source
 
 * OpenBazaar
 * JSXHint
+* btchip-signing-tools
 * react-grid-layout
 * react-localstorage
 * react-router-component
+* react-resizable
 * textFit
 * backbone.queryRouter
 * backbone.layoutManager
 * mongoose-filter-denormalize
-* Healthcare.gov-Marketplace
 
 Collaboration
 -------------
