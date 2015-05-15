@@ -12,9 +12,11 @@ var replaceURLs = require('./lib/replaceURLs');
 
 // Ghetto per-browser prefixing
 var browserPrefix = require('./lib/getPrefix')();
-styleText = styleText.map(function(text) {
-  return text.replace(/-webkit-/g, browserPrefix);
-});
+if (browserPrefix) {
+  styleText = styleText.map(function(text) {
+    return text.replace(/-webkit-/g, browserPrefix);
+  });
+}
 
 
 // Wait for load to get started.
