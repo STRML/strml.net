@@ -23,10 +23,11 @@ if (browserPrefix) {
 document.addEventListener("DOMContentLoaded", doWork);
 
 // Vars that will help us get er done
-var isDev = window.location.hostname === 'localhost';
+var isDev = window.location.hostname === 'localhost' && false;
 var speed = isDev ? 0 : 16;
-var style, styleEl, workEl, pgpEl, skipAnimationEl;
+var style, styleEl, workEl, pgpEl, skipAnimationEl, pauseEl;
 var animationSkipped = false, done = false;
+var paused = false, resume = null;
 function doWork(){
   // We're cheating a bit on styles.
   var preStyleEl = document.createElement('style');
@@ -43,6 +44,7 @@ function doWork(){
   workEl = document.getElementById('work-text');
   pgpEl = document.getElementById('pgp-text');
   skipAnimationEl = document.getElementById('skip-animation');
+  pauseEl = document.getElementById('pause-resume');
 
   // Mirror user edits back to the style element.
   styleEl.addEventListener('input', function() {
@@ -53,6 +55,17 @@ function doWork(){
   skipAnimationEl.addEventListener('click', function(e) {
     e.preventDefault();
     animationSkipped = true;
+  });
+
+  pauseEl.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (paused) {
+      pauseEl.textContent = "Pause ||";
+      paused = false;
+    } else {
+      pauseEl.textContent = "Resume >>";
+      paused = true;
+    }
   });
 
   if (!isDev || true) {
@@ -188,6 +201,14 @@ function writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval){
           if (endOfBlock.test(thisSlice)) thisInterval *= 50;
         }
 
+        return thisInterval;
+      }
+    })
+    .then(function wait(thisInterval) {
+      if (typeof thisInterval !== "number") return;
+      if (paused) {
+        return Promise.delay(thisInterval).then(wait.bind(null, thisInterval));
+      } else {
         return Promise.delay(thisInterval)
         .then(writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval));
       }
