@@ -3,22 +3,22 @@
  * The text could use some tweaks.
  */
 
-#work-text .md {
+.md {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
-#work-text .md h1,h2,h3,h4,h5,h6 {
+.md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
   display: inline-block;
   color: #ddd;
   border-bottom: 1px solid #ccc;
   padding-bottom: 5px;
 }
 
-#work-text .md li {
+.md li {
   margin: 5px 0;
 }
 
-#work-text .md h1,h2,h3,h4,h5,h6,ul,p {
+.md h1, .md h2, .md h3, .md h4, .md h5, .md h6, .md ul, .md p {
   margin: 0px;
 }
 
