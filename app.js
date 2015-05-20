@@ -75,7 +75,7 @@ function doWork(){
     .then(setWorkListener)
     .delay(1000)
     .then(writeTo(styleEl, styleText[2], 0, speed, true, 1))
-    .then(writeTo(pgpEl, pgpText, 0, speed, false, 16))
+    .then(writeTo(pgpEl, pgpText, 0, speed, false, 32))
     .then(writeTo(styleEl, styleText[3], 0, speed, true, 1))
     .catch(function(e) {
       if (e.message === "SKIP IT") {
