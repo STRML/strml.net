@@ -23,7 +23,7 @@ if (browserPrefix) {
 document.addEventListener("DOMContentLoaded", doWork);
 
 // Vars that will help us get er done
-var isDev = window.location.hostname === 'localhost' && false;
+var isDev = window.location.hostname === 'localhost';
 var speed = isDev ? 0 : 16;
 var style, styleEl, workEl, pgpEl, skipAnimationEl, pauseEl;
 var animationSkipped = false, done = false;
@@ -108,6 +108,7 @@ function getSomeoneElseToDoTheWork() {
   var start = Date.now();
   var interval = setInterval(function() {
     workEl.scrollTop = Infinity;
+    styleEl.scrollTop = pgpEl.scrollTop = Infinity;
     if (Date.now() - 1000 > start) clearInterval(interval);
   }, 0);
 }
@@ -142,7 +143,10 @@ function writeChar(el, char, buffer){
 }
 
 function handleChar(fullText, char) {
-  if (char === '/' && openComment === false) {
+  if (openComment && char !== '/') {
+    // Short-circuit during a comment so we don't highlight inside it.
+    fullText += char;
+  } else if (char === '/' && openComment === false) {
     openComment = true;
     fullText += char;
   } else if (char === '/' && fullText.slice(-1) === '*' && openComment === true) {
