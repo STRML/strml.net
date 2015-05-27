@@ -1,12 +1,10 @@
-'use strict';
-
 require('classlist-polyfill');
 var Promise = require('bluebird');
 var md = require('markdown').markdown.toHTML;
 var workText = require('raw!./work.txt');
 var pgpText = require('raw!./pgp.txt');
 var headerHTML = require('raw!./header.html');
-var styleText = [0,1,2,3].map(function(i) { return require('raw!./styles' + i + '.css'); });
+var styleText = [0, 1, 2, 3].map(function(i) { return require('raw!./styles' + i + '.css'); });
 var preStyles = require('raw!./prestyles.css');
 var replaceURLs = require('./lib/replaceURLs');
 
@@ -27,8 +25,8 @@ var isDev = window.location.hostname === 'localhost';
 var speed = isDev ? 0 : 16;
 var style, styleEl, workEl, pgpEl, skipAnimationEl, pauseEl;
 var animationSkipped = false, done = false;
-var paused = false, resume = null;
-function doWork(){
+var paused = false;
+async function doWork(){
   // We're cheating a bit on styles.
   var preStyleEl = document.createElement('style');
   preStyleEl.textContent = preStyles;
@@ -46,6 +44,16 @@ function doWork(){
   skipAnimationEl = document.getElementById('skip-animation');
   pauseEl = document.getElementById('pause-resume');
 
+  createEventHandlers();
+
+  if (!isDev || true) {
+    run();
+  } else {
+    getSomeoneElseToDoTheWork();
+  }
+}
+
+function createEventHandlers() {
   // Mirror user edits back to the style element.
   styleEl.addEventListener('input', function() {
     style.textContent = styleEl.textContent;
@@ -67,23 +75,24 @@ function doWork(){
       paused = true;
     }
   });
+}
 
-  if (!isDev || true) {
-    writeTo(styleEl, styleText[0], 0, speed, true, 1)()
-    .then(writeTo(workEl, workText, 0, speed, false, 1))
-    .then(writeTo(styleEl, styleText[1], 0, speed, true, 1))
-    .then(setWorkListener)
-    .delay(1000)
-    .then(writeTo(styleEl, styleText[2], 0, speed, true, 1))
-    .then(writeTo(pgpEl, pgpText, 0, speed, false, 32))
-    .then(writeTo(styleEl, styleText[3], 0, speed, true, 1))
-    .catch(function(e) {
-      if (e.message === "SKIP IT") {
-        getSomeoneElseToDoTheWork();
-      }
-    });
-  } else {
-    getSomeoneElseToDoTheWork();
+async function run() {
+  try {
+    await writeTo(styleEl, styleText[0], 0, speed, true, 1);
+    await writeTo(workEl, workText, 0, speed, false, 1);
+    await writeTo(styleEl, styleText[1], 0, speed, true, 1);
+    setWorkListener();
+    await Promise.delay(1000);
+    await writeTo(styleEl, styleText[2], 0, speed, true, 1);
+    await writeTo(pgpEl, pgpText, 0, speed, false, 32);
+    await writeTo(styleEl, styleText[3], 0, speed, true, 1);
+  }
+  // Flow control straight from the ghettos of Milwaukee
+  catch(e) {
+    if (e.message === "SKIP IT") {
+      getSomeoneElseToDoTheWork();
+    }
   }
 }
 
@@ -125,7 +134,7 @@ function getSomeoneElseToDoTheWork() {
 var openComment = false;
 var styleBuffer = '';
 var fullTextStorage = {};
-function writeChar(el, char, buffer){
+function writeChar(el, char){
   // Grab text. We buffer it in storage so we don't have to read from the DOM every iteration.
   var fullText = fullTextStorage[el.id];
   if (!fullText) fullText = fullTextStorage[el.id] = el.innerHTML;
@@ -174,50 +183,41 @@ function writeSimpleChar(el, char) {
 
 var endOfSentence = /[\.\?\!]\s$/;
 var endOfBlock = /[^\/]\n\n$/;
-function writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval){
-  return function() {
-    return Promise.try(function() {
-      if (animationSkipped) {
-        // Lol who needs proper flow control
-        throw new Error('SKIP IT');
-      }
-      // Write a character or multiple characters to the buffer.
-      var chars = message.slice(index, index + charsPerInterval);
-      index += charsPerInterval;
 
-      // Ensure we stay scrolled to the bottom.
-      el.scrollTop = el.scrollHeight;
+async function writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval){
+  if (animationSkipped) {
+    // Lol who needs proper flow control
+    throw new Error('SKIP IT');
+  }
+  // Write a character or multiple characters to the buffer.
+  var chars = message.slice(index, index + charsPerInterval);
+  index += charsPerInterval;
 
-      // If this is going to <style> it's more complex; otherwise, just write.
-      if (mirrorToStyle) {
-        writeChar(el, chars);
-      } else {
-        writeSimpleChar(el, chars);
-      }
-    })
-    .then(function() {
-      if (index < message.length) {
-        // Schedule another write.
-        var thisInterval = interval;
-        var thisSlice = message.slice(index - 2, index + 1);
-        if (!isDev) {
-          if (endOfSentence.test(thisSlice)) thisInterval *= 70;
-          if (endOfBlock.test(thisSlice)) thisInterval *= 50;
-        }
+  // Ensure we stay scrolled to the bottom.
+  el.scrollTop = el.scrollHeight;
 
-        return thisInterval;
-      }
-    })
-    .then(function wait(thisInterval) {
-      if (typeof thisInterval !== "number") return;
-      if (paused) {
-        return Promise.delay(thisInterval).then(wait.bind(null, thisInterval));
-      } else {
-        return Promise.delay(thisInterval)
-        .then(writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval));
-      }
-    });
-  };
+  // If this is going to <style> it's more complex; otherwise, just write.
+  if (mirrorToStyle) {
+    writeChar(el, chars);
+  } else {
+    writeSimpleChar(el, chars);
+  }
+
+  // Schedule another write.
+  if (index < message.length) {
+    var thisInterval = interval;
+    var thisSlice = message.slice(index - 2, index + 1);
+    if (!isDev) {
+      if (endOfSentence.test(thisSlice)) thisInterval *= 70;
+      if (endOfBlock.test(thisSlice)) thisInterval *= 50;
+    }
+
+    do {
+      await Promise.delay(thisInterval);
+    } while(paused);
+
+    return writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval);
+  }
 }
 
 //
@@ -233,7 +233,7 @@ function setWorkListener() {
 
   // flippy floppy
   var flipping = 0;
-  require('mouse-wheel')(workEl, function(dx, dy) {
+  require('mouse-wheel')(workEl, async function(dx, dy) {
     if (flipping) return;
     var flipped = workEl.classList.contains('flipped');
     var half = (workEl.scrollHeight - workEl.clientHeight) / 2;
@@ -243,10 +243,9 @@ function setWorkListener() {
     if (pastHalf) {
       workEl.classList.toggle('flipped');
       flipping = true;
-      setTimeout(function() {
-        workEl.scrollTop = flipped ? 0 : 9999;
-        flipping = false;
-      }, 500);
+      await Promise.delay(500);
+      workEl.scrollTop = flipped ? 0 : 9999;
+      flipping = false;
     }
 
     // Scroll. If we've flipped, flip the scroll direction.

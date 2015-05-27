@@ -1,5 +1,6 @@
 'use strict';
 var webpack = require('webpack');
+var path = require('path');
 
 // Builds bundle usable inside <script>.
 module.exports = {
@@ -8,7 +9,7 @@ module.exports = {
     'app': './app.js'
   },
   output: {
-    path: __dirname + "/dist",
+    path: path.join(__dirname, "/dist"),
     filename: "[name].js",
     libraryTarget: "umd",
     library: "app"
@@ -16,7 +17,11 @@ module.exports = {
   devtool: 'source-map',
   module: {
     loaders: [
-      {test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader?stage=0'}
+      {
+        test: /\.js?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader'
+      }
     ]
   },
   plugins: [

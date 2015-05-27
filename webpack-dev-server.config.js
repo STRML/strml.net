@@ -1,19 +1,23 @@
-var webpack = require("webpack");
+var path = require('path');
 
 module.exports = {
     context: __dirname,
     entry: [
       "webpack-dev-server/client?http://localhost:4003",
-      "./app.js",
+      "./app.js"
     ],
     output: {
-      path: __dirname + "/dist",
+      path: path.join(__dirname, "/dist"),
       filename: "bundle.js",
-      sourceMapFilename: "[file].map",
+      sourceMapFilename: "[file].map"
     },
     module: {
       loaders: [
-        {test: /\.js?$/, exclude: /node_modules/, loader: 'babel-loader?stage=0'}
+        {
+          test: /\.js?$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader'
+        }
       ]
     },
     plugins: [
