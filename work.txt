@@ -11,6 +11,13 @@ Contact
 * sam at bitmex dot com
 * samuel.trace.reed at gmail dot com
 
+Availability
+-------------
+
+I'm currently open for freelance work.
+Email me at one of the addresses above
+if you are interested in hiring.
+
 Projects
 --------
 
@@ -34,7 +41,4 @@ Open Source
 * backbone.layoutManager
 * mongoose-filter-denormalize
 
-Collaboration
--------------
 
-Email me if you want to work together.

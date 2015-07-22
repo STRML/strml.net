@@ -19,7 +19,7 @@
 /**
  * That didn't do much. But you'll see.
  *
- * Let's keep going. Black on white is really boring,
+ * Black on white is really boring,
  * so let's do something about it.
  */
 
@@ -36,7 +36,7 @@ pre, a {
 }
 
 /**
- * That's better. Sorry about your eyes. Moving on...
+ * That's better. Sorry about your eyes.
  *
  * Working in this big empty space is tough.
  *
@@ -80,7 +80,7 @@ pre:not(:empty) {
 .value.px      { color: #F92772; }
 
 /**
- * Alright, now we're getting somewhere.
+ * Now we're getting somewhere.
  * Time to get a little perspective.
  */
 
@@ -95,7 +95,8 @@ body {
 }
 
 /**
- * So, let's talk projects.
+ * So, let's talk projects. That's why you're here, right?
+ * I can't imagine you'd come just to see the pretty colors.
  */
 
 pre:not(#style-text) {

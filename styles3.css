@@ -1,8 +1,6 @@
 
 /**
  * We're almost done.
- *
- * Let's just set some animations and get out of here.
  */
 
  pre:hover{
@@ -20,7 +18,7 @@
  * a page like this. Some of the autotyping and syntax highlighting
  * code is based off his work.
  *
- * See more of Jake's work at http://codepen.io/jakealbaugh/ .
+ * See more of Jake's work at http://codepen.io/jakealbaugh/
  */
 
 /**
@@ -32,7 +30,8 @@
  * 'x', 'y', 'blur', 'color'.
  *
  * So if I wanted to mirror the values,
- * I could place a shadow 15px under it, with a little blur for effect:
+ * I could place a shadow 15px under it,
+ * with a little blur for effect:
  */
 
 .value {
@@ -40,7 +39,9 @@
 }
 
 /**
- * Try it out!
+ * Try it out! There's lots you can do.
+ * Try playing with text sizes, shadows, animations, or just
+ * break the page. I won't hold it against you.
  */
 
 
