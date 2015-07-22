@@ -78,6 +78,7 @@ async function surprisinglyShortAttentionSpan() {
  */
 
 let endOfSentence = /[\.\?\!]\s$/;
+let comma = /\D[\,]\s$/;
 let endOfBlock = /[^\/]\n\n$/;
 
 async function writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval){
@@ -103,8 +104,9 @@ async function writeTo(el, message, index, interval, mirrorToStyle, charsPerInte
   if (index < message.length) {
     let thisInterval = interval;
     let thisSlice = message.slice(index - 2, index + 1);
-    if (endOfSentence.test(thisSlice)) thisInterval *= 70;
-    if (endOfBlock.test(thisSlice)) thisInterval *= 50;
+    if (comma.test(thisSlice)) thisInterval = interval * 30;
+    if (endOfBlock.test(thisSlice)) thisInterval = interval * 50;
+    if (endOfSentence.test(thisSlice)) thisInterval = interval * 70;
 
     do {
       await Promise.delay(thisInterval);
