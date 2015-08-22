@@ -2,21 +2,22 @@ STRML.net
 =========
 
 Samuel Reed
+CTO, BitMEX (The Bitcoin Mercantile Exchange)
 Frontend / NodeJS Developer
 
 Contact
 -------
 
-* STRML on irc.freenode.net
 * sam at bitmex dot com
 * samuel.trace.reed at gmail dot com
+* STRML on irc.freenode.net
 
 Availability
 -------------
 
-I'm currently open for freelance work.
-Email me at one of the addresses above
-if you are interested in hiring.
+At this time, I am busy. I am happy to entertain
+proposals for later work but immediate availability
+is scarce.
 
 Projects
 --------
@@ -36,7 +37,9 @@ Open Source
 * react-localstorage
 * react-router-component
 * react-resizable
+* react-draggable
 * textFit
+* imgur-to-gfycat
 * backbone.queryRouter
 * backbone.layoutManager
 * mongoose-filter-denormalize
