@@ -13,7 +13,7 @@ Contact
 * STRML on irc.freenode.net
 
 Availability
--------------
+------------
 
 At this time, I am busy. I am happy to entertain
 proposals for later work but immediate availability
