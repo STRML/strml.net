@@ -1,7 +1,7 @@
 require('classlist-polyfill');
 let Promise = require('bluebird');
 let md = require('markdown').markdown.toHTML;
-let workText = require('raw!./work.txt');
+let workText = require('raw!./jd.md');
 let pgpText = require('raw!./pgp.txt');
 let headerHTML = require('raw!./header.html');
 let styleText = [0, 1, 2, 3].map(function(i) { return require('raw!./styles' + i + '.css'); });
