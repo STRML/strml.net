@@ -1,16 +1,14 @@
-STRML.net
+lovelyjs.com
 =========
 
-Samuel Reed
-CTO, BitMEX (The Bitcoin Mercantile Exchange)
+Timiz Qi
 Frontend / NodeJS Developer
 
 Contact
 -------
 
-* sam at bitmex dot com
-* samuel.trace.reed at gmail dot com
-* STRML on irc.freenode.net
+* lovelyjs.com at gmail dot com
+* lastjune on www.github.com
 
 Availability
 ------------
@@ -22,26 +20,9 @@ is scarce.
 Projects
 --------
 
-* www.BitMEX.com
-* www.Securesha.re
-* www.Tixelated.com
-* www.BrightestYoungThings.com
+* www.lovelyjs.com
 
 Open Source
 -----------
 
-* OpenBazaar
-* JSXHint
-* btchip-signing-tools
-* react-grid-layout
-* react-localstorage
-* react-router-component
-* react-resizable
-* react-draggable
-* textFit
-* imgur-to-gfycat
-* backbone.queryRouter
-* backbone.layoutManager
-* mongoose-filter-denormalize
-
-
+* wait to add
