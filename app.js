@@ -1,17 +1,19 @@
-require('classlist-polyfill');
-let Promise = require('bluebird');
-let md = require('markdown').markdown.toHTML;
-let workText = require('raw!./work.txt');
-let pgpText = require('raw!./pgp.txt');
-let headerHTML = require('raw!./header.html');
+import 'classlist-polyfill';
+import Promise from 'bluebird';
+import Markdown from 'markdown';
+const md = Markdown.markdown.toHTML;
+import workText from 'raw!./work.txt';
+import pgpText from 'raw!./pgp.txt';
+import headerHTML from 'raw!./header.html';
 let styleText = [0, 1, 2, 3].map(function(i) { return require('raw!./styles' + i + '.css'); });
-let preStyles = require('raw!./prestyles.css');
-let replaceURLs = require('./lib/replaceURLs');
-let writeChar = require('./lib/writeChar');
+import preStyles from 'raw!./prestyles.css';
+import replaceURLs from './lib/replaceURLs';
+import {default as writeChar, writeSimpleChar, handleChar} from './lib/writeChar';
+import getPrefix from './lib/getPrefix';
 
 // Vars that will help us get er done
-let isDev = window.location.hostname === 'localhost';
-let speed = isDev ? 0 : 16;
+const isDev = window.location.hostname === 'localhost';
+const speed = isDev ? 0 : 16;
 let style, styleEl, workEl, pgpEl, skipAnimationEl, pauseEl;
 let animationSkipped = false, done = false, paused = false;
 let browserPrefix;
@@ -58,7 +60,7 @@ async function surprisinglyShortAttentionSpan() {
   style.textContent += txt;
   let styleHTML = "";
   for(let i = 0; i < txt.length; i++) {
-     styleHTML = writeChar.handleChar(styleHTML, txt[i]);
+     styleHTML = handleChar(styleHTML, txt[i]);
   }
   styleEl.innerHTML = styleHTML;
   createWorkBox();
@@ -97,7 +99,7 @@ async function writeTo(el, message, index, interval, mirrorToStyle, charsPerInte
   if (mirrorToStyle) {
     writeChar(el, chars, style);
   } else {
-    writeChar.simple(el, chars);
+    writeSimpleChar(el, chars);
   }
 
   // Schedule another write.
@@ -122,12 +124,10 @@ async function writeTo(el, message, index, interval, mirrorToStyle, charsPerInte
 //
 function getBrowserPrefix() {
   // Ghetto per-browser prefixing
-  browserPrefix = require('./lib/getPrefix')();
-  if (browserPrefix) {
-    styleText = styleText.map(function(text) {
-      return text.replace(/-webkit-/g, browserPrefix);
-    });
-  }
+  browserPrefix = getPrefix(); // could be empty string, which is fine
+  styleText = styleText.map(function(text) {
+    return text.replace(/-webkit-/g, browserPrefix);
+  });
 }
 
 //
