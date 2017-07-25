@@ -3,7 +3,7 @@ STRML.net
 
 Samuel Reed
 CTO, BitMEX (The Bitcoin Mercantile Exchange)
-Frontend / NodeJS Developer
+Full-Stack / NodeJS / DevOps
 
 Contact
 -------
@@ -30,14 +30,15 @@ Projects
 Open Source
 -----------
 
-* OpenBazaar
-* JSXHint
-* btchip-signing-tools
+* Babel
 * react-grid-layout
 * react-localstorage
 * react-router-component
 * react-resizable
 * react-draggable
+* OpenBazaar
+* JSXHint
+* btchip-signing-tools
 * textFit
 * imgur-to-gfycat
 * backbone.queryRouter
