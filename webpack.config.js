@@ -12,7 +12,7 @@ module.exports = {
     path: path.join(__dirname, "/dist"),
     filename: "[name].js",
     libraryTarget: "umd",
-    library: "app"
+    library: "app",
   },
   devtool: 'source-map',
   module: {
@@ -21,19 +21,19 @@ module.exports = {
         test: /\.js?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        query: {
-          stage: 1,
-          optional: ["runtime"]
-        }
       }
     ]
   },
+  devServer: {
+    contentBase: __dirname,
+    publicPath: '/dist',
+    compress: true,
+    port: 4003,
+  },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}})
   ],
   resolve: {
-    extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx"]
   }
 };
