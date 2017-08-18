@@ -11,6 +11,7 @@ Contact
 * sam at bitmex dot com
 * samuel.trace.reed at gmail dot com
 * STRML on irc.freenode.net
+* @STRML_ on Twitter
 
 Availability
 ------------
@@ -26,23 +27,25 @@ Projects
 * www.Securesha.re
 * www.Tixelated.com
 * www.BrightestYoungThings.com
+and of course...
+* www.strml.net
 
 Open Source
 -----------
 
 * Babel
-* react-grid-layout
-* react-localstorage
-* react-router-component
-* react-resizable
-* react-draggable
+* React-Grid-Layout
+* React-LocalStorage
+* React-Router-Component
+* React-Resizable
+* React-Draggable
 * OpenBazaar
 * JSXHint
-* btchip-signing-tools
-* textFit
-* imgur-to-gfycat
+* BTChip-Signing-Tools
+* TextFit
+* Imgur-to-GFYcat
 * backbone.queryRouter
 * backbone.layoutManager
-* mongoose-filter-denormalize
+* Mongoose-Filter-Denormalize
 
 
