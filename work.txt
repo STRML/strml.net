@@ -13,13 +13,6 @@ Contact
 * STRML on irc.freenode.net
 * @STRML_ on Twitter
 
-Availability
-------------
-
-At this time, I am busy. I am happy to entertain
-proposals for later work but immediate availability
-is scarce.
-
 Projects
 --------
 
