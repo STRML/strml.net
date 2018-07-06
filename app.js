@@ -196,22 +196,31 @@ function createWorkBox() {
 
   // flippy floppy
   let flipping = 0;
+  let flipped = false;
   require('mouse-wheel')(workEl, async function(dx, dy) {
     if (flipping) return;
-    let flipped = workEl.classList.contains('flipped');
-    let half = (workEl.scrollHeight - workEl.clientHeight) / 2;
-    let pastHalf = flipped ? workEl.scrollTop < half : workEl.scrollTop > half;
-
-    // If we're past half, flip the el.
-    if (pastHalf) {
-      workEl.classList.toggle('flipped');
-      flipping = true;
-      await Promise.delay(500);
-      workEl.scrollTop = flipped ? 0 : 9999;
-      flipping = false;
-    }
 
     // Scroll. If we've flipped, flip the scroll direction.
     workEl.scrollTop += (dy * (flipped ? -1 : 1));
   }, true);
+
+  // Put the checker for scrolling in another scroll listener,
+  // so the flip event can be triggered correctly in mobile devices
+  workEl.addEventListener('scroll', async function(event) {
+    flipped = workEl.classList.contains('flipped');
+    let half = (workEl.scrollHeight - workEl.clientHeight) / 2;
+    let pastHalf = flipped ? workEl.scrollTop < half : workEl.scrollTop > half;
+    if (pastHalf) {
+      flipping = true
+      workEl.classList.toggle('flipped')
+      await Promise.delay(500)
+      workEl.scrollTop = flipped ? 0 : 9999
+
+      // Sometimes I found if user continously scroll during flipping, 
+      // the workEl will mistakely flip twice, so I manually set passHalf
+      // to false to solve it
+      pastHalf = false   
+      flipping = false
+    }
+  })
 }
