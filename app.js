@@ -197,13 +197,8 @@ function createWorkBox() {
   // flippy floppy
   let flipping = 0;
   let flipped = false;
-  let half = (workEl.scrollHeight - workEl.clientHeight) / 2;
-  let pastHalf = false;
   require('mouse-wheel')(workEl, async function(dx, dy) {
     if (flipping) return;
-    flipped = workEl.classList.contains('flipped');
-    half = (workEl.scrollHeight - workEl.clientHeight) / 2;
-    pastHalf = flipped ? workEl.scrollTop < half : workEl.scrollTop > half;
 
     // Scroll. If we've flipped, flip the scroll direction.
     workEl.scrollTop += (dy * (flipped ? -1 : 1));
@@ -212,6 +207,9 @@ function createWorkBox() {
   // Put the checker for scrolling in another scroll listener,
   // so the flip event can be triggered correctly in mobile devices
   workEl.addEventListener('scroll', async function(event) {
+    flipped = workEl.classList.contains('flipped');
+    let half = (workEl.scrollHeight - workEl.clientHeight) / 2;
+    let pastHalf = flipped ? workEl.scrollTop < half : workEl.scrollTop > half;
     if (pastHalf) {
       flipping = true
       workEl.classList.toggle('flipped')
