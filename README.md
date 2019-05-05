@@ -1,7 +1,7 @@
 
-cd strml.net
-npm install
-npm run dev
+# cd strml.net
+# npm install
+# npm run dev
 #
 
 ```
