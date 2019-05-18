@@ -20,3 +20,5 @@ Building for Production
 ```bash
 npm run build
 ```
+
+Hey Samuel, This is [Jack Zampolin](https://jackzampolin.com) from [Cosmos/Tendermint](https://cosmos.network). I'm the Product Mananger on the SDK and the Hub. Been running into a few more W&L folks in crypto and figured I'd try to reach out again. If you need to get in touch, I'm `jackzampolin` pretty much everywhere on the internet.  Would love to just connect and talk some crypto.
