@@ -5,6 +5,7 @@ var path = require('path');
 // Builds bundle usable inside <script>.
 module.exports = {
   context: __dirname,
+  mode: 'production',
   entry: {
     'app': './app.js'
   },
@@ -16,11 +17,14 @@ module.exports = {
   },
   devtool: 'source-map',
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
+        query: {
+          cacheDirectory: true,
+        }
       }
     ]
   },
@@ -30,10 +34,7 @@ module.exports = {
     compress: true,
     port: 4003,
   },
-  plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}})
-  ],
-  resolve: {
-  }
+  optimization: {
+    minimize: true
+  },
 };

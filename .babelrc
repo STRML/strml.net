@@ -1,15 +1,13 @@
 {
   "presets": [
-    "es2015",
-    "stage-3",
-    "flow"
+    "@babel/preset-env",
+    "@babel/preset-flow"
   ],
   "plugins": [
-    ["transform-runtime", {
-      "helpers": false,
-      "polyfill": false,
-      "regenerator": true,
-      "moduleName": "babel-runtime"
-    }]
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-syntax-import-meta",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-json-strings"
   ]
 }
