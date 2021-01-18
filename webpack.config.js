@@ -22,11 +22,16 @@ module.exports = {
         test: /\.js?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        query: {
+        options: {
           cacheDirectory: true,
         }
       }
     ]
+  },
+  resolve: {
+    fallback: {
+      util: require.resolve('util/')
+    }
   },
   devServer: {
     contentBase: __dirname,
