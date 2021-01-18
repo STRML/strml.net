@@ -12,6 +12,7 @@ Contact
 * samuel.trace.reed at gmail dot com
 * STRML on irc.freenode.net
 * @STRML_ on Twitter
+* STRML#7665 on Discord
 
 Projects
 --------
