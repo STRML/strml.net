@@ -2,7 +2,7 @@ STRML.net
 =========
 
 Samuel Reed
-CTO, BitMEX (The Bitcoin Mercantile Exchange)
+Co-Founder, BitMEX (The Bitcoin Mercantile Exchange)
 Full-Stack / NodeJS / DevOps
 
 Contact
