@@ -1,0 +1,72 @@
+/**
+ * Oh. Hi. You again.
+ *
+ * Back in 2015 I made a page that wrote its own stylesheet,
+ * one keystroke at a time. You might have seen it.
+ *
+ * It's 2026 now. Code doesn't get typed much anymore.
+ * It gets generated, a few thousand tokens at a time,
+ * by something that never gets tired.
+ *
+ * This page is still typed. One character at a time.
+ *
+ * But this time, we're going to go a lot harder.
+ */
+
+/**
+ * First, the old trick. Animate everything.
+ */
+
+* {
+  transition: all .8s cubic-bezier(.2, .8, .2, 1);
+}
+
+/**
+ * White is for documents.
+ * We are not making a document.
+ */
+
+html {
+  background: #0a0a09;
+}
+
+body {
+  color: #d8d3c4;
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: .02em;
+}
+
+/**
+ * Better. Every sci-fi interface I've ever loved
+ * is built from about five colors.
+ *
+ * Let's name them, so everything else can share.
+ */
+
+:root {
+  --paper: #0a0a09;
+  --ink: #d8d3c4;
+  --dim: #6f6b61;
+  --line: #2b2a26;
+  --hot: #e5553b;
+}
+
+a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--dim);
+}
+
+/**
+ * Syntax highlighting. But quiet.
+ * We're adults now.
+ */
+
+.comment       { color: var(--dim); font-style: normal; }
+.selector      { color: var(--ink); }
+.key           { color: #a9a393; }
+.value         { color: #f4eddb; }
+.value.px      { color: var(--hot); }
+

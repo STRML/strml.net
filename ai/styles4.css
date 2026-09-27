@@ -1,0 +1,38 @@
+
+/**
+ * People are going to ask if a model wrote this.
+ * Fair question, in 2026.
+ *
+ * Watch the keys, and decide for yourself.
+ */
+
+#keys {
+  display: block;
+  grid-area: keys;
+  padding: 6px 0 14px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.kc {
+  display: inline-block;
+  min-width: 1.9em;
+  margin: 1px;
+  padding: 1px 3px;
+  color: #3d3b35;
+}
+
+.kc.on {
+  color: var(--paper);
+  background: var(--hot);
+  transition: none;
+}
+
+.hand {
+  display: inline-block;
+  width: 32%;
+  margin-top: 4px;
+  font-size: 9px;
+  color: var(--dim);
+}
+

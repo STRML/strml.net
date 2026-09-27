@@ -1,0 +1,116 @@
+
+/**
+ * One panel was enough in 2015.
+ * In 2026 we have instrumentation. Lots of it.
+ *
+ * Let's give everything an address first...
+ */
+
+#style-text { grid-area: code; }
+#center     { grid-area: center; }
+#pgp-text   { grid-area: eye; }
+
+/**
+ * ...and then build the grid.
+ */
+
+#stage {
+  display: grid;
+  grid-template-columns: 16vw minmax(0, 1fr) 30vw;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    "spine  center eye"
+    "spine  center code"
+    "status status status"
+    "keys   keys   keys";
+  column-gap: 2vw;
+  padding: 48px 3vw 0;
+}
+
+#top {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 3vw;
+  color: var(--dim);
+}
+
+#top .logo { border: 0; font-weight: 500; margin-right: 8px; }
+
+/**
+ * The middle column stacks. Work at the bottom,
+ * fun stuff on top. We'll get to the fun stuff.
+ */
+
+#center {
+  display: flex;
+  flex-direction: column;
+}
+
+#work-text {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/**
+ * Every panel gets a hairline, and nothing else.
+ * No drop shadows. Shadows are skeuomorphism.
+ */
+
+pre:not(:empty), .panel {
+  border: 1px solid var(--line);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+/**
+ * Crop marks, so you know it was engineered.
+ */
+
+pre:not(:empty), .panel {
+  background-color: rgba(12, 12, 11, .86);
+  background-image:
+    linear-gradient(var(--ink), var(--ink)),
+    linear-gradient(var(--ink), var(--ink)),
+    linear-gradient(var(--ink), var(--ink)),
+    linear-gradient(var(--ink), var(--ink));
+  background-size: 9px 1px, 1px 9px, 9px 1px, 1px 9px;
+  background-position: top left, top left, bottom right, bottom right;
+  background-repeat: no-repeat;
+}
+
+#style-text {
+  font-size: 11px;
+}
+
+/**
+ * Graph paper. Engineers can't think without it.
+ */
+
+body {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(rgba(216, 211, 196, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(216, 211, 196, .035) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/**
+ * And the thing nobody needs but everybody wants.
+ */
+
+#stage::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .22) 0px, rgba(0, 0, 0, .22) 1px, transparent 1px, transparent 3px);
+}
+
+/**
+ * Scanlines. Obviously.
+ *
+ * Okay. Let's talk about work.
+ */
+
