@@ -2,6 +2,7 @@ STRML.net
 =========
 
 Samuel Reed
+President, Rush Auto Works (the largest spec racing series in the world)
 Co-Founder, BitMEX (The Bitcoin Mercantile Exchange)
 Full-Stack / NodeJS / DevOps
 
@@ -27,20 +28,31 @@ and of course...
 Open Source
 -----------
 
-* Babel
-* React-Grid-Layout
-* React-LocalStorage
-* React-Router-Component
-* React-Resizable
-* React-Draggable
-* OpenBazaar
-* JSXHint
-* BTChip-Signing-Tools
-* TextFit
-* Imgur-to-GFYcat
-* backbone.queryRouter
-* backbone.layoutManager
-* Mongoose-Filter-Denormalize
+* [Babel](https://github.com/babel/babel)
+* [React-Grid-Layout](https://github.com/react-grid-layout/react-grid-layout)
+* [React-Draggable](https://github.com/react-grid-layout/react-draggable)
+* [React-Resizable](https://github.com/react-grid-layout/react-resizable)
+* [React-Router-Component](https://github.com/STRML/react-router-component)
+* [React-LocalStorage](https://github.com/STRML/react-localstorage)
+* [React-Document-Events](https://github.com/STRML/react-document-events)
+* [TextFit](https://github.com/STRML/textFit)
+* [SublimeLinter](https://github.com/SublimeLinter)
+* [JSON-to-Flow](https://github.com/STRML/json-to-flow)
+
+Agents & Tooling
+----------------
+
+* [cc-autodream](https://github.com/STRML/cc-autodream)
+* [cc-simple-memory](https://github.com/STRML/cc-simple-memory)
+* [agent-mnemopi](https://github.com/STRML/agent-mnemopi)
+* [cc-debate](https://github.com/STRML/cc-debate)
+* [cc-skills](https://github.com/STRML/cc-skills)
+* [cc-codemaps](https://github.com/STRML/cc-codemaps)
+* [cc-clear-handoff](https://github.com/STRML/cc-clear-handoff)
+* [cc-plugin-audit](https://github.com/STRML/cc-plugin-audit)
+* [cc-pr-videos](https://github.com/STRML/cc-pr-videos)
+* [cmux-restore](https://github.com/STRML/cmux-restore)
+* [omp-classifier](https://github.com/STRML/omp-classifier)
 
 Photos
 ------
