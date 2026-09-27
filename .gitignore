@@ -1,2 +1,3 @@
 node_modules/
 dist/
+.webui_secret_key
