@@ -8,7 +8,8 @@ import headerHTML from 'raw-loader!./header.html';
 let styleText = [0, 1, 2, 3].map((i) => require('raw-loader!./styles' + i + '.css').default);
 import preStyles from 'raw-loader!./prestyles.css';
 import replaceURLs from './lib/replaceURLs';
-import {default as writeChar, writeSimpleChar, handleChar} from './lib/writeChar';
+import {default as writeChar, writeSimpleChar, highlightAll} from './lib/writeChar';
+import pauseFor from './lib/pacing';
 import getPrefix from './lib/getPrefix';
 
 // Vars that will help us get er done
@@ -58,11 +59,7 @@ async function surprisinglyShortAttentionSpan() {
   // The work-text animations are rough
   style.textContent = "#work-text * { " + browserPrefix + "transition: none; }";
   style.textContent += txt;
-  let styleHTML = "";
-  for(let i = 0; i < txt.length; i++) {
-     styleHTML = handleChar(styleHTML, txt[i]);
-  }
-  styleEl.innerHTML = styleHTML;
+  styleEl.innerHTML = highlightAll(txt);
   createWorkBox();
 
   // There's a bit of a scroll problem with this thing
@@ -78,10 +75,6 @@ async function surprisinglyShortAttentionSpan() {
 /**
  * Helpers
  */
-
-let endOfSentence = /[\.\?\!]\s$/;
-let comma = /\D[\,]\s$/;
-let endOfBlock = /[^\/]\n\n$/;
 
 async function writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval){
   if (animationSkipped) {
@@ -104,11 +97,7 @@ async function writeTo(el, message, index, interval, mirrorToStyle, charsPerInte
 
   // Schedule another write.
   if (index < message.length) {
-    let thisInterval = interval;
-    let thisSlice = message.slice(index - 2, index + 1);
-    if (comma.test(thisSlice)) thisInterval = interval * 30;
-    if (endOfBlock.test(thisSlice)) thisInterval = interval * 50;
-    if (endOfSentence.test(thisSlice)) thisInterval = interval * 70;
+    let thisInterval = pauseFor(message.slice(index - 2, index + 1), interval);
 
     do {
       await Promise.delay(thisInterval);

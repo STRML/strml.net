@@ -1,0 +1,18 @@
+/*
+ * Phones get a simpler, stacked layout. This loads after the typed
+ * stylesheet, so it wins without having to shout.
+ */
+
+@media (max-width: 820px) {
+  #stage {
+    display: block;
+    overflow: auto;
+    padding: 36px 12px 12px;
+  }
+  #spine, #keys, #tether, #reticle, #pupil, #pgp-text { display: none; }
+  #specimen { height: 46vh; grid-template-columns: 1fr; }
+  #twin { display: none; }
+  #style-text, #work-text { max-height: 60vh; }
+  #status { grid-template-columns: repeat(3, 1fr); row-gap: 8px; }
+  #top .right a:not(#pause-resume):not(#skip-animation):not(.rate) { display: none; }
+}

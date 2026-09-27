@@ -25,6 +25,7 @@
 .kc.on {
   color: var(--paper);
   background: var(--hot);
+  transition: none;
 }
 
 .hand {

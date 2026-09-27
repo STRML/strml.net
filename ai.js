@@ -12,8 +12,10 @@ import workText from 'raw-loader!./work.txt';
 import pgpText from 'raw-loader!./pgp.txt';
 import headerHTML from 'raw-loader!./ai/header.html';
 import preStyles from 'raw-loader!./ai/prestyles.css';
+import mobileStyles from 'raw-loader!./ai/mobile.css';
 import replaceURLs from './lib/replaceURLs';
-import {default as writeChar, writeSimpleChar, handleChar} from './lib/writeChar';
+import {default as writeChar, writeSimpleChar, highlightAll} from './lib/writeChar';
+import pauseFor from './lib/pacing';
 
 const styleText = [0, 1, 2, 3, 4, 5, 6].map((i) => require('raw-loader!./ai/styles' + i + '.css').default);
 
@@ -71,12 +73,11 @@ async function startAnimation() {
       cursor.chapter = i;
       cursor.index = 0;
       const c = chapters[i];
-      await writeTo(elFor(c), c.text, c.el === 'style', c.perTick);
+      await writeTo(c);
       if (c.after) c.after();
       await delay(c.el === 'style' ? 300 : 900);
     }
-    telemetry.mode = 'idle';
-    done = true;
+    finish();
   }
   // Flow control straight from the ghettos of Milwaukee. Still.
   catch(e) {
@@ -91,7 +92,6 @@ async function startAnimation() {
 // Skips all the animations.
 async function surprisinglyShortAttentionSpan() {
   if (done) return;
-  done = true;
 
   // Fast-forward the instruments through everything we didn't get to type.
   for (let i = cursor.chapter; i < chapters.length; i++) {
@@ -101,17 +101,12 @@ async function surprisinglyShortAttentionSpan() {
       onKeystroke(c.text.slice(j, j + c.perTick), c.el === 'style', true);
     }
   }
-  telemetry.mode = 'idle';
-  cursor.chapter = chapters.length - 1;
+  finish();
 
   pgpEl.textContent = pgpText;
   let txt = styleText.join('\n');
   style.textContent = txt;
-  let styleHTML = '';
-  for (let i = 0; i < txt.length; i++) {
-    styleHTML = handleChar(styleHTML, txt[i]);
-  }
-  styleEl.innerHTML = styleHTML;
+  styleEl.innerHTML = highlightAll(txt);
   renderWork();
 
   await delay(50);
@@ -123,19 +118,20 @@ async function surprisinglyShortAttentionSpan() {
  * Helpers
  */
 
-const endOfSentence = /[\.\?\!]\s$/;
-const comma = /\D[\,]\s$/;
-const endOfBlock = /[^\/]\n\n$/;
-
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function elFor(chapter) {
-  return {style: styleEl, work: workEl, pgp: pgpEl}[chapter.el];
+function finish() {
+  done = true;
+  telemetry.mode = 'idle';
+  cursor.chapter = chapters.length - 1;
 }
 
-async function writeTo(el, message, mirrorToStyle, charsPerInterval) {
+async function writeTo(chapter) {
+  const el = {style: styleEl, work: workEl, pgp: pgpEl}[chapter.el];
+  const mirrorToStyle = chapter.el === 'style';
+  const message = chapter.text, charsPerInterval = chapter.perTick;
   for (let index = 0; index < message.length;) {
     if (animationSkipped) {
       // Lol who needs proper flow control
@@ -155,12 +151,8 @@ async function writeTo(el, message, mirrorToStyle, charsPerInterval) {
     el.scrollTop = el.scrollHeight;
     onKeystroke(chars, mirrorToStyle, false);
 
-    // Schedule another write. Humans pause to think; so does this.
-    let thisInterval = speed;
-    let thisSlice = message.slice(index - 2, index + 1);
-    if (comma.test(thisSlice)) thisInterval = speed * 30;
-    if (endOfBlock.test(thisSlice)) thisInterval = speed * 50;
-    if (endOfSentence.test(thisSlice)) thisInterval = speed * 70;
+    // Schedule another write.
+    const thisInterval = pauseFor(message.slice(index - 2, index + 1), speed);
     telemetry.mode = thisInterval > speed * 10 ? 'thinking' : 'typing';
 
     // With no delay at all, yield every so often so we can still paint.
@@ -186,6 +178,10 @@ function getEls() {
   let preStyleEl = document.createElement('style');
   preStyleEl.textContent = preStyles;
   document.head.insertBefore(preStyleEl, document.getElementsByTagName('style')[0]);
+  // ...and on phones, which get the last word.
+  let mobileStyleEl = document.createElement('style');
+  mobileStyleEl.textContent = mobileStyles;
+  document.head.appendChild(mobileStyleEl);
 
   style = document.getElementById('style-tag');
   styleEl = document.getElementById('style-text');
@@ -221,7 +217,6 @@ function createEventHandlers() {
     e.preventDefault();
     paused = !paused;
     pauseEl.textContent = paused ? 'resume >>' : 'pause ||';
-    if (paused) telemetry.mode = 'paused';
   });
 
   const rateEls = document.querySelectorAll('#top .rate');
@@ -256,10 +251,11 @@ function renderWork() {
  */
 
 const telemetry = {
-  ticks: 0, chars: 0, rules: 0, props: 0, selectors: 0, comments: 0, lines: 0,
-  mode: 'idle', started: performance.now(), buckets: new Array(60).fill(0), lastChar: '',
+  ticks: 0, chars: 0, rules: 0, props: 0, selectors: 0, comments: 0,
+  mode: 'idle', started: performance.now(), buckets: new Array(60).fill(0),
 };
-const eye = {x: -1, y: -1, last: 0, px: 0, py: 0};
+const eye = {x: -1, y: -1, last: 0};
+let bucketEpoch = 0;
 const els = {};
 
 // Deterministic randomness, so the page grows the same way every time.
@@ -278,10 +274,15 @@ function fmt(n) {
   return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '\'');
 }
 
-function palette() {
+// Colors come from the typed stylesheet. Reading them forces a style recalc,
+// so only look a few times a second; that's plenty to catch edits.
+let pal = null, palRead = -Infinity;
+function palette(now) {
+  if (now - palRead < 250) return pal;
+  palRead = now;
   const cs = getComputedStyle(document.documentElement);
   const get = (name, fallback) => (cs.getPropertyValue(name) || '').trim() || fallback;
-  return {
+  const next = {
     paper: get('--paper', '#0a0a09'),
     ink: get('--ink', '#d8d3c4'),
     dim: get('--dim', '#6f6b61'),
@@ -289,18 +290,33 @@ function palette() {
     hot: get('--hot', '#e5553b'),
     font: '9px "JetBrains Mono", ui-monospace, Menlo, monospace',
   };
+  next.key = [next.paper, next.ink, next.dim, next.line, next.hot].join();
+  if (!pal || pal.key !== next.key) pal = next;
+  return pal;
 }
 
 //
-// Keep a canvas sized to its box, at device resolution.
+// Keep a canvas sized to its box, at device resolution. Sizes arrive from a
+// ResizeObserver, so drawing never has to ask the layout engine.
 //
-function sizeCanvas(canvas) {
+const canvasSizes = new ResizeObserver((entries) => entries.forEach((e) => {
+  e.target._w = e.contentRect.width;
+  e.target._h = e.contentRect.height;
+}));
+
+// Returns null when the canvas is hidden, or when `key` (everything the
+// drawing depends on) is the same as last time and there's nothing to redo.
+function sizeCanvas(canvas, key) {
   const dpr = window.devicePixelRatio || 1;
-  const w = canvas.clientWidth, h = canvas.clientHeight;
+  const w = canvas._w, h = canvas._h;
   if (!w || !h) return null;
-  if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
-    canvas.width = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
+  const W = Math.round(w * dpr), H = Math.round(h * dpr);
+  key = key + '|' + W + 'x' + H;
+  if (canvas._key === key) return null;
+  canvas._key = key;
+  if (canvas.width !== W || canvas.height !== H) {
+    canvas.width = W;
+    canvas.height = H;
   }
   const ctx = canvas.getContext('2d');
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -315,7 +331,7 @@ function sizeCanvas(canvas) {
 //
 const GW = 128, GH = 56, SECTION_ROW = 34;
 const field = new Float32Array(GW * GH);
-let smooth = new Float32Array(GW * GH);
+const smooth = new Float32Array(GW * GH);
 let fieldDirty = true, lastDeposit = -1;
 const mask = [];
 const fieldRand = rng(2015);
@@ -375,7 +391,7 @@ function smoothField() {
 }
 
 function drawSpecimen(p) {
-  const s = sizeCanvas(els.specimen);
+  const s = sizeCanvas(els.specimen, telemetry.ticks + telemetry.mode + p.key);
   if (!s) return;
   const {ctx, w, h} = s;
   const L = 26, R = 14, T = 40, B = 22;
@@ -473,10 +489,11 @@ function drawSpecimen(p) {
     const lx = Math.min(ax + 40, L + pw - 90), ly = Math.max(ay - 18, T + 8);
     ctx.strokeStyle = p.ink;
     ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(lx, ly); ctx.lineTo(lx + 6, ly); ctx.stroke();
+    const label = 'apex ' + apex + ' steps';
     ctx.fillStyle = p.paper;
-    ctx.fillRect(lx + 7, ly - 7, ctx.measureText('apex ' + apex + ' steps').width + 4, 10);
+    ctx.fillRect(lx + 7, ly - 7, ctx.measureText(label).width + 4, 10);
     ctx.fillStyle = p.ink;
-    ctx.fillText('apex ' + apex + ' steps', lx + 9, ly + 1);
+    ctx.fillText(label, lx + 9, ly + 1);
   }
 
   // Where the latest keystroke landed.
@@ -499,7 +516,7 @@ function drawSpecimen(p) {
 }
 
 function drawSection(p) {
-  const s = sizeCanvas(els.section);
+  const s = sizeCanvas(els.section, telemetry.ticks + p.key);
   if (!s) return;
   const {ctx, w, h} = s;
   const row = smooth.subarray(SECTION_ROW * GW, SECTION_ROW * GW + GW);
@@ -526,13 +543,15 @@ function drawSection(p) {
     if (on && !inside) cuts++;
     inside = on;
   }
-  els.cuts.textContent = 'cuts ' + cuts + ' members';
+  const cutsText = 'cuts ' + cuts + ' members';
+  if (els.cuts.textContent !== cutsText) els.cuts.textContent = cutsText;
 }
 
 //
 // Spine: the timeline arc, 2015 at the top, today at the bottom.
 //
 const clusters = [];
+let lastBorn = -Infinity;
 
 function spawnCluster(t, silent) {
   const r = rng(clusters.length * 7919 + 13);
@@ -552,11 +571,16 @@ function spawnCluster(t, silent) {
     const inward = r() < 0.2;
     grow(0, 0, (inward ? Math.PI : 0) + (r() - 0.5) * 1.8, (big ? 10 : 4) + r() * (big ? 12 : 7), 0);
   }
-  clusters.push({t, segs, born: silent ? performance.now() - r() * 900 : performance.now()});
+  const born = silent ? performance.now() - r() * 900 : performance.now();
+  lastBorn = Math.max(lastBorn, born);
+  clusters.push({t, segs, born});
 }
 
 function drawSpine(p, now) {
-  const s = sizeCanvas(els.spine);
+  // Only animate while something is moving: the head pulses while typing,
+  // and fresh roots take a moment to grow in.
+  const animating = telemetry.mode === 'typing' || now - lastBorn < 1200;
+  const s = sizeCanvas(els.spine, animating ? now : telemetry.ticks + '|' + cursor.chapter + done + p.key);
   if (!s) return;
   const {ctx, w, h} = s;
   const top = 30, bottom = h - 40;
@@ -644,10 +668,10 @@ function drawSpine(p, now) {
 }
 
 function drawSpark(p) {
-  const s = sizeCanvas(els.spark);
+  const b = telemetry.buckets;
+  const s = sizeCanvas(els.spark, bucketEpoch + '|' + b[b.length - 1] + p.key);
   if (!s) return;
   const {ctx, w, h} = s;
-  const b = telemetry.buckets;
   const max = Math.max(10, ...b);
   const bw = w / b.length;
   ctx.fillStyle = p.ink;
@@ -681,7 +705,6 @@ function buildKeyboard() {
   const wrap = document.getElementById('keys');
   KEY_ROWS.forEach((row, r) => {
     const rowEl = document.createElement('div');
-    rowEl.className = 'krow';
     row.forEach((k, c) => {
       const el = document.createElement('span');
       el.className = 'kc';
@@ -694,13 +717,16 @@ function buildKeyboard() {
     });
     wrap.appendChild(rowEl);
   });
-  const hands = document.createElement('div');
-  hands.innerHTML = '<span class="hand" id="hand-l"></span><span class="hand" id="hand-r"></span>';
-  wrap.appendChild(hands);
-  els.handL = document.getElementById('hand-l');
-  els.handR = document.getElementById('hand-r');
-  els.handL.textContent = '[\'hand0:l\'] 0.0000000';
-  els.handR.textContent = '[\'hand1:r\'] 0.0000000';
+  // One readout per hand, like a tracker's debug overlay.
+  els.hands = {};
+  [['L', '[\'hand0:l\'] '], ['R', '[\'hand1:r\'] ']].forEach(([hand, label]) => {
+    const el = document.createElement('span');
+    el.className = 'hand';
+    el.dataset.label = label;
+    el.textContent = label + '0.0000000';
+    els.hands[hand] = el;
+    wrap.appendChild(el);
+  });
 }
 
 // KeyboardEvent.key names for the keys that aren't characters.
@@ -717,7 +743,7 @@ function pressKey(ch) {
   else if (ch === ' ') names = ['space'];
   else if (SHIFTED[ch]) names = [SHIFTED[ch], '⇧'];
   else if (/[A-Z]/.test(ch)) names = [ch.toLowerCase(), '⇧'];
-  else if (keyEls[ch]) names = [ch];
+  else names = [ch];
   names.forEach((n) => (keyEls[n] || []).forEach((el) => {
     el.classList.add('on');
     clearTimeout(el._t);
@@ -726,8 +752,8 @@ function pressKey(ch) {
   const primary = names[0] && keyEls[names[0]] && keyEls[names[0]][0];
   if (primary) {
     const conf = (0.35 + handRand() * 0.6).toFixed(7);
-    if (primary.dataset.hand === 'L') els.handL.textContent = '[\'hand0:l\'] ' + conf + '  ' + JSON.stringify(ch);
-    else els.handR.textContent = '[\'hand1:r\'] ' + conf + '  ' + JSON.stringify(ch);
+    const readout = els.hands[primary.dataset.hand];
+    readout.textContent = readout.dataset.label + conf + '  ' + JSON.stringify(ch);
   }
 }
 
@@ -750,6 +776,7 @@ function buildHUD() {
   els.section = document.getElementById('section-canvas');
   els.spine = document.getElementById('spine-canvas');
   els.spark = document.getElementById('spark-canvas');
+  [els.specimen, els.section, els.spine, els.spark].forEach((c) => canvasSizes.observe(c));
   els.cuts = document.getElementById('cuts');
   els.echo = document.getElementById('echo');
   els.reticle = document.getElementById('reticle');
@@ -776,6 +803,7 @@ function buildHUD() {
   buildMask();
   buildKeyboard();
   setInterval(() => {
+    bucketEpoch++;
     telemetry.buckets.shift();
     telemetry.buckets.push(0);
   }, 1000);
@@ -789,7 +817,6 @@ function onKeystroke(chars, isStyle, silent) {
   deposit(telemetry.ticks);
   for (let i = 0; i < chars.length; i++) {
     const ch = chars[i];
-    if (ch === '\n') telemetry.lines++;
     if (isStyle) {
       if (ch === '{') telemetry.selectors++;
       if (ch === ';') telemetry.props++;
@@ -807,7 +834,12 @@ function onKeystroke(chars, isStyle, silent) {
 //
 // The eye. Watches your cursor, lazily.
 //
+const EYE_CHAPTER = chapters.findIndex((c) => c.name === 'eye/');
+const narrow = window.matchMedia('(max-width: 820px)');
+
 function trackEye(now) {
+  // Nothing to track until the stylesheet has drawn the eye.
+  if (narrow.matches || (!done && cursor.chapter < EYE_CHAPTER)) return;
   const eyeBox = pgpEl.getBoundingClientRect();
   const cx = eyeBox.left + eyeBox.width / 2, cy = eyeBox.top + eyeBox.height / 2;
   const watching = eye.x >= 0 && now - eye.last < 2500;
@@ -841,7 +873,7 @@ function trackEye(now) {
 
 let lastTwin = 0;
 function frame(now) {
-  const p = palette();
+  const p = palette(now);
   drawSpecimen(p);
   drawSection(p);
   drawSpine(p, now);
@@ -860,7 +892,7 @@ function frame(now) {
     const mode = paused ? 'paused' : telemetry.mode;
     els.stMode.textContent = (mode === 'typing' ? '● ' : '○ ') + mode;
     els.stMode.className = mode;
-    els.stChapter.textContent = '/' + chapters[Math.min(cursor.chapter, chapters.length - 1)].name.replace(/\/$/, '') +
+    els.stChapter.textContent = '/' + chapters[cursor.chapter].name.replace(/\/$/, '') +
       '  [' + (cursor.chapter + 1) + '/' + chapters.length + ']';
     els.echo.textContent = mode === 'typing' ? 'echo typing' : 'echo at rest';
   }

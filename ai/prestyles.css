@@ -71,19 +71,3 @@ pre {
   pointer-events: none;
   z-index: 26;
 }
-
-.kc.on { transition: none !important; }
-
-@media (max-width: 820px) {
-  #stage {
-    display: block !important;
-    overflow: auto !important;
-    padding: 36px 12px 12px !important;
-  }
-  #spine, #keys, #tether, #reticle, #pupil, #pgp-text { display: none !important; }
-  #specimen { height: 46vh !important; grid-template-columns: 1fr !important; }
-  #twin { display: none !important; }
-  #style-text, #work-text { max-height: 60vh !important; }
-  #status { grid-template-columns: repeat(3, 1fr) !important; row-gap: 8px; }
-  #top .right a:not(#pause-resume):not(#skip-animation):not(.rate) { display: none; }
-}
