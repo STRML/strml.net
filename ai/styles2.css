@@ -1,0 +1,125 @@
+
+/**
+ * That rendered, but it looks like 1996.
+ * Let's make it look like a terminal.
+ */
+
+#work-text .md {
+  white-space: normal;
+  margin: 6px 0 10px;
+}
+
+.md h1, .md h2 {
+  margin: 14px 0 4px;
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--hot);
+}
+
+.md h1 { color: var(--ink); margin-top: 0; }
+.md p, .md ul { margin: 0; }
+
+.md ul {
+  padding: 0;
+  list-style: none;
+  columns: 2;
+}
+
+.md li::before { content: "› "; color: var(--dim); }
+.prompt        { color: var(--dim); }
+
+/**
+ * Good. Now you came here for the future,
+ * so let's build some.
+ *
+ * Things in the future don't fade in.
+ * They materialize.
+ */
+
+@keyframes materialize {
+  0%   { clip-path: inset(0 100% 0 0); opacity: 0; }
+  40%  { clip-path: inset(0 0 0 0); opacity: .9; }
+  55%  { opacity: .15; }
+  70%  { opacity: 1; }
+  80%  { opacity: .4; }
+  100% { opacity: 1; }
+}
+
+[data-hud] {
+  animation: materialize 1.1s steps(14) both;
+}
+
+/**
+ * Everything I've typed so far has been recorded.
+ * Every keystroke is a point, dropped on a height field.
+ *
+ * Here. I call it the specimen.
+ */
+
+#specimen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 34%;
+  column-gap: 16px;
+  height: 40vh;
+  flex: none;
+}
+
+/**
+ * It's growing toward something. You'll see what,
+ * once I've typed enough.
+ *
+ * Now, a numeric twin, for the people who don't trust pictures.
+ */
+
+#twin {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 10px;
+  min-height: 0;
+}
+
+.twin-head {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink);
+}
+
+.twin-head span + span, .note {
+  color: var(--dim);
+}
+
+.sect {
+  height: 52px;
+  border: 1px solid var(--line);
+  flex: none;
+}
+
+.twin-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--dim);
+  border-bottom: 1px dotted var(--line);
+}
+
+.twin-row b {
+  font-weight: 400;
+  color: var(--ink);
+}
+
+#card {
+  margin-top: auto;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  color: var(--dim);
+}
+
+#card b {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 400;
+  color: var(--ink);
+}
+

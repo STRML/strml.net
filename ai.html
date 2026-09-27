@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>STRML: Age of AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
+    <style id="style-tag"></style>
+    <script src="dist/ai.js"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/ico/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/ico/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/ico/favicon-16x16.png">
+    <link rel="shortcut icon" href="/ico/favicon.ico" type="image/x-icon" />
+  </head>
+  <body spellcheck="false">
+    <div id="top"></div>
+    <div id="stage">
+      <aside id="spine" data-hud><canvas id="spine-canvas"></canvas></aside>
+      <main id="center">
+        <section id="specimen" class="panel" data-hud>
+          <div id="specimen-plot"><canvas id="specimen-canvas"></canvas></div>
+          <div id="twin">
+            <div class="twin-head"><span>section A–A</span><span id="echo">echo at rest</span></div>
+            <div class="sect"><canvas id="section-canvas"></canvas></div>
+            <div class="note" id="cuts">cuts 0 members</div>
+            <div class="twin-head"><span>numeric twin</span><span>as counts</span></div>
+            <div id="twin-rows"></div>
+            <div id="card">
+              <b><span>STRML</span><span id="card-date"></span></b>
+              Samuel Reed · typed, not streamed.<br>Hand-set since 2015.
+            </div>
+          </div>
+        </section>
+        <pre id="work-text"></pre>
+      </main>
+      <pre id="pgp-text"></pre>
+      <pre contenteditable id="style-text"></pre>
+      <footer id="status" class="panel" data-hud>
+        <div class="stat"><b>STRML</b><br><span id="st-chapter"></span></div>
+        <div class="stat"><span class="stat-label">keys</span><span id="st-keys">0</span></div>
+        <div class="stat"><span class="stat-label">rules</span><span id="st-rules">0</span></div>
+        <div class="stat"><span class="stat-label">rate</span><span id="st-rate">0</span></div>
+        <div class="stat"><span class="stat-label">hand</span><span id="st-mode">idle</span></div>
+        <div class="stat"><span class="stat-label">eye</span><span id="st-eye">idle</span></div>
+        <div class="stat"><span class="stat-label">last 60 s <em id="st-date"></em></span><div class="spark-box"><canvas id="spark-canvas"></canvas></div></div>
+      </footer>
+      <div id="keys" data-hud></div>
+    </div>
+    <svg id="tether" data-hud><line x1="0" y1="0" x2="0" y2="0"></line></svg>
+    <div id="reticle" data-hud></div>
+    <div id="pupil" data-hud></div>
+  </body>
+</html>

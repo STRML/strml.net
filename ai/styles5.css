@@ -1,0 +1,65 @@
+
+/**
+ * One more thing.
+ * Every sci-fi interface needs an eye.
+ */
+
+#pgp-text {
+  justify-self: center;
+  width: 170px;
+  height: 170px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  overflow: hidden;
+  word-break: break-all;
+  font-size: 5px;
+  line-height: 5px;
+  color: var(--dim);
+}
+
+#pupil {
+  display: block;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  background: var(--hot);
+  box-shadow: 0 0 34px var(--hot);
+  mix-blend-mode: screen;
+}
+
+/**
+ * And it follows you.
+ */
+
+#reticle {
+  display: block;
+  width: 22px;
+  height: 22px;
+  margin: -12px 0 0 -12px;
+  border: 1px solid var(--hot);
+}
+
+#reticle::after {
+  content: attr(data-xy);
+  position: absolute;
+  top: -3px;
+  left: 30px;
+  white-space: pre;
+  font-size: 9px;
+  line-height: 1.3;
+  color: var(--dim);
+}
+
+#tether {
+  display: block;
+  stroke: var(--dim);
+  stroke-dasharray: 2 4;
+}
+
+/**
+ * I'll fill it with my PGP key.
+ * You know, if you're into that sort of thing.
+ */
+

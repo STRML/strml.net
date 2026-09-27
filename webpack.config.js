@@ -7,7 +7,8 @@ module.exports = {
   context: __dirname,
   mode: 'production',
   entry: {
-    'app': './app.js'
+    'app': './app.js',
+    'ai': './ai.js'
   },
   output: {
     path: path.join(__dirname, "/dist"),

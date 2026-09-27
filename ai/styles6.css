@@ -1,0 +1,49 @@
+
+/**
+ * Nearly there. A little life.
+ */
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.caret {
+  color: var(--hot);
+  animation: blink 1s steps(1) infinite;
+}
+
+pre:hover, .panel:hover {
+  border-color: var(--dim);
+}
+
+#skip-animation, #pause-resume {
+  display: none;
+}
+
+/**
+ * That's the page.
+ *
+ * Every character you just watched was typed, one at a time,
+ * by a loop that waits a little longer after commas.
+ * Same trick as 2015. Some things don't need a model.
+ *
+ * Thanks again to Jake Albaugh, who did this first.
+ * http://codepen.io/jakealbaugh/
+ */
+
+/**
+ * This box is still editable. And everything on screen,
+ * the canvases too, reads from those five colors up top.
+ *
+ * Watch.
+ */
+
+:root {
+  --hot: #4fd1c5;
+}
+
+/**
+ * Go on. Break it. The future can take it.
+ *
+ * Nostalgic? The 2015 edition is one click away, up top.
+ */

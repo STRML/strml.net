@@ -1,0 +1,46 @@
+
+/**
+ * This page has history now.
+ * Let's give it some roots.
+ *
+ * That arc is a timeline, from the 2015 page to today.
+ * Every rule I finish sprouts something.
+ */
+
+#spine {
+  display: block;
+  grid-area: spine;
+  margin-left: -3vw;
+}
+
+/**
+ * Telemetry. If it moves, measure it.
+ */
+
+#status {
+  display: grid;
+  grid-area: status;
+  grid-template-columns: 1.5fr repeat(5, 1fr) 2.2fr;
+  align-items: end;
+  margin: 0;
+  padding: 10px 0;
+  border-width: 1px 0 0 0;
+  background: none;
+  text-transform: uppercase;
+}
+
+.stat-label {
+  display: block;
+  font-size: 9px;
+  letter-spacing: .14em;
+  color: var(--dim);
+}
+
+.stat b { font-weight: 500; }
+.stat em { font-style: normal; color: var(--dim); }
+
+#st-mode.typing   { color: var(--hot); }
+#st-mode.thinking { color: var(--ink); }
+
+.spark-box { height: 22px; }
+
