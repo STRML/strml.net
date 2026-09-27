@@ -205,6 +205,12 @@ function createEventHandlers() {
     style.textContent = styleEl.textContent;
   });
 
+  // Your turn on the keyboard.
+  styleEl.addEventListener('keydown', function(e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    pressKey(e.key);
+  });
+
   skipAnimationEl.addEventListener('click', function(e) {
     e.preventDefault();
     animationSkipped = true;
@@ -696,9 +702,17 @@ function buildKeyboard() {
   els.handR.textContent = '[\'hand1:r\'] 0.0000000';
 }
 
+// KeyboardEvent.key names for the keys that aren't characters.
+const KEY_NAMES = {
+  Enter: '↵', Backspace: '⌫', Delete: '⌫', Tab: 'tab', Escape: 'esc', CapsLock: 'caps',
+};
+
 function pressKey(ch) {
   let names = [];
-  if (ch === '\n') names = ['↵'];
+  if (KEY_NAMES[ch]) names = [KEY_NAMES[ch]];
+  else if (ch === 'Shift') names = ['⇧', '⇧ '];
+  else if (ch.length > 1) return;
+  else if (ch === '\n') names = ['↵'];
   else if (ch === ' ') names = ['space'];
   else if (SHIFTED[ch]) names = [SHIFTED[ch], '⇧'];
   else if (/[A-Z]/.test(ch)) names = [ch.toLowerCase(), '⇧'];

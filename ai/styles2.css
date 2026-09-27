@@ -21,6 +21,25 @@
 .md h1 { color: var(--ink); margin-top: 0; }
 .md p, .md ul { margin: 0; }
 
+/**
+ * Markdown glued my job titles into one run-on line.
+ * One per line, please. Name on top.
+ */
+
+.md h1 + p {
+  white-space: pre-line;
+  margin: 8px 0 4px;
+  padding-left: 12px;
+  border-left: 1px solid var(--hot);
+  line-height: 1.8;
+  color: var(--dim);
+}
+
+.md h1 + p::first-line {
+  font-size: 14px;
+  color: var(--ink);
+}
+
 .md ul {
   padding: 0;
   list-style: none;
