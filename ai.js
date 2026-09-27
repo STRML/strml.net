@@ -209,6 +209,7 @@ function createEventHandlers() {
   styleEl.addEventListener('keydown', function(e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     pressKey(e.key);
+    if (e.key.length === 1 || e.key === 'Enter') telemetry.buckets[telemetry.buckets.length - 1]++;
   });
 
   skipAnimationEl.addEventListener('click', function(e) {
@@ -784,7 +785,7 @@ let prevChar = '';
 function onKeystroke(chars, isStyle, silent) {
   telemetry.ticks++;
   telemetry.chars += chars.length;
-  telemetry.buckets[telemetry.buckets.length - 1]++;
+  telemetry.buckets[telemetry.buckets.length - 1] += chars.length;
   deposit(telemetry.ticks);
   for (let i = 0; i < chars.length; i++) {
     const ch = chars[i];
@@ -850,10 +851,12 @@ function frame(now) {
   if (now - lastTwin > 100) {
     lastTwin = now;
     TWIN.forEach(([, fn], i) => (els.twin[i].textContent = fn()));
-    const rate = telemetry.buckets.slice(-4, -1).reduce((a, b) => a + b, 0) / 3;
+    // Words per minute, the typist's way: five characters to a word,
+    // averaged over the last three whole seconds.
+    const wpm = (telemetry.buckets.slice(-4, -1).reduce((a, b) => a + b, 0) / 3) * 60 / 5;
     els.stKeys.textContent = fmt(telemetry.ticks);
     els.stRules.textContent = fmt(telemetry.rules);
-    els.stRate.textContent = rate.toFixed(0) + ' /s';
+    els.stRate.textContent = fmt(wpm) + ' wpm';
     const mode = paused ? 'paused' : telemetry.mode;
     els.stMode.textContent = (mode === 'typing' ? '● ' : '○ ') + mode;
     els.stMode.className = mode;
