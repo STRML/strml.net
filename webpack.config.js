@@ -1,5 +1,4 @@
 'use strict';
-var webpack = require('webpack');
 var path = require('path');
 
 // Builds bundle usable inside <script>.
@@ -17,8 +16,18 @@ module.exports = {
     library: "app",
   },
   devtool: 'source-map',
+  // The .css and .html files are shown to the visitor as text, so webpack
+  // must not parse or minify them.
+  experiments: {
+    css: false,
+    html: false,
+  },
   module: {
     rules: [
+      {
+        resourceQuery: /raw/,
+        type: 'asset/source',
+      },
       {
         test: /\.js?$/,
         exclude: /node_modules/,
@@ -29,14 +38,9 @@ module.exports = {
       }
     ]
   },
-  resolve: {
-    fallback: {
-      util: require.resolve('util/')
-    }
-  },
   devServer: {
-    contentBase: __dirname,
-    publicPath: '/dist',
+    static: { directory: __dirname },
+    devMiddleware: { publicPath: '/dist' },
     compress: true,
     port: 4003,
   },
