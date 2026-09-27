@@ -6,18 +6,18 @@
 // (a specimen, a timeline, telemetry, a keyboard, an eye) that only become
 // visible as the stylesheet reaches them.
 //
-import Markdown from 'markdown';
-const md = Markdown.markdown.toHTML;
-import workText from 'raw-loader!./work.txt';
-import pgpText from 'raw-loader!./pgp.txt';
-import headerHTML from 'raw-loader!./ai/header.html';
-import preStyles from 'raw-loader!./ai/prestyles.css';
-import mobileStyles from 'raw-loader!./ai/mobile.css';
+import { marked } from 'marked';
+const md = (text) => marked.parse(text, { gfm: false });
+import workText from './work.txt?raw';
+import pgpText from './pgp.txt?raw';
+import headerHTML from './ai/header.html?raw';
+import preStyles from './ai/prestyles.css?raw';
+import mobileStyles from './ai/mobile.css?raw';
 import replaceURLs from './lib/replaceURLs';
 import {default as writeChar, writeSimpleChar, highlightAll} from './lib/writeChar';
 import pauseFor from './lib/pacing';
 
-const styleText = [0, 1, 2, 3, 4, 5, 6].map((i) => require('raw-loader!./ai/styles' + i + '.css').default);
+const styleText = [0, 1, 2, 3, 4, 5, 6].map((i) => require('./ai/styles' + i + '.css?raw'));
 
 // Vars that will help us get er done
 const params = new URLSearchParams(window.location.search);
