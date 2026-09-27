@@ -26,6 +26,12 @@ const workIntro = 'strml@2026 ~\n❯ cat work.txt\n\n';
 
 let style, styleEl, workEl, pgpEl, skipAnimationEl, pauseEl;
 let animationSkipped = false, done = false, paused = false;
+// Playback rate, from the 1x / 2x / 4x buttons.
+let rate = 1;
+// When the next keystroke is due. Keeping a schedule (instead of sleeping a
+// fixed amount each time) means 4x really is 4x, even below the browser's
+// minimum timer resolution.
+let due = 0;
 
 // The whole show, in order. Each chapter is one stop on the timeline.
 const chapters = [
@@ -158,10 +164,16 @@ async function writeTo(el, message, mirrorToStyle, charsPerInterval) {
     telemetry.mode = thisInterval > speed * 10 ? 'thinking' : 'typing';
 
     // With no delay at all, yield every so often so we can still paint.
-    if (thisInterval > 0 || index % 40 === 0) {
-      do {
-        await delay(thisInterval);
-      } while (paused);
+    if (thisInterval === 0) {
+      if (index % 40 === 0) await delay(0);
+    } else {
+      due = Math.max(due, performance.now() - 100) + thisInterval / rate;
+      const wait = due - performance.now();
+      if (wait > 0) await delay(wait);
+    }
+    while (paused) {
+      await delay(50);
+      due = performance.now();
     }
   }
 }
@@ -204,6 +216,14 @@ function createEventHandlers() {
     pauseEl.textContent = paused ? 'resume >>' : 'pause ||';
     if (paused) telemetry.mode = 'paused';
   });
+
+  const rateEls = document.querySelectorAll('#top .rate');
+  rateEls.forEach((el) => el.addEventListener('click', function(e) {
+    e.preventDefault();
+    rate = Number(el.dataset.rate);
+    due = performance.now();
+    rateEls.forEach((r) => r.classList.toggle('on', r === el));
+  }));
 
   window.addEventListener('mousemove', function(e) {
     eye.x = e.clientX;

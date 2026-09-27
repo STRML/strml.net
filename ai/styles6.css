@@ -16,7 +16,7 @@ pre:hover, .panel:hover {
   border-color: var(--dim);
 }
 
-#skip-animation, #pause-resume {
+#skip-animation, #pause-resume, .rate {
   display: none;
 }
 

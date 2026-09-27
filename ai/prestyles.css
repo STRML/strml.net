@@ -41,6 +41,8 @@ pre {
 
 #top a { margin-right: 12px; }
 #top .right { float: right; }
+#top .rate { margin-right: 6px; opacity: .5; }
+#top .rate.on { opacity: 1; }
 #top .right a:last-child { margin-right: 0; }
 
 #spine, #specimen-plot, .sect, .spark-box {
@@ -83,5 +85,5 @@ pre {
   #twin { display: none !important; }
   #style-text, #work-text { max-height: 60vh !important; }
   #status { grid-template-columns: repeat(3, 1fr) !important; row-gap: 8px; }
-  #top .right a:not(#pause-resume):not(#skip-animation) { display: none; }
+  #top .right a:not(#pause-resume):not(#skip-animation):not(.rate) { display: none; }
 }
