@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "build": "webpack",
+    "lint": "oxlint",
     "dev": "webpack serve --open",
     "watch": "webpack --progress --watch"
   },
@@ -16,6 +17,7 @@
     "@babel/preset-env": "^8.0.6",
     "@babel/preset-flow": "^8.0.1",
     "babel-loader": "^10.1.1",
+    "oxlint": "^1.93.0",
     "webpack": "^5.111.1",
     "webpack-cli": "^7.2.3",
     "webpack-dev-server": "^6.0.0"

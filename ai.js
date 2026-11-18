@@ -118,6 +118,12 @@ async function surprisinglyShortAttentionSpan() {
  * Helpers
  */
 
+const telemetry = {
+  ticks: 0, chars: 0, rules: 0, props: 0, selectors: 0, comments: 0,
+  mode: 'idle', started: performance.now(), buckets: new Array(60).fill(0),
+};
+const eye = {x: -1, y: -1, last: 0};
+
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -250,11 +256,6 @@ function renderWork() {
  * keep count from the very first keystroke.
  */
 
-const telemetry = {
-  ticks: 0, chars: 0, rules: 0, props: 0, selectors: 0, comments: 0,
-  mode: 'idle', started: performance.now(), buckets: new Array(60).fill(0),
-};
-const eye = {x: -1, y: -1, last: 0};
 let bucketEpoch = 0;
 const els = {};
 
