@@ -16,6 +16,15 @@ npm run dev
 # Open localhost:4003 in your browser
 ```
 
+Linting
+--------
+
+```bash
+npm run lint
+```
+
+Runs oxlint with the rules in `.oxlintrc.json`. CI does not run it.
+
 Building for Production
 --------
 
